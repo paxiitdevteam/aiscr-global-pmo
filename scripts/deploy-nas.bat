@@ -11,7 +11,7 @@ REM Configuration
 set NAS_HOST=192.168.1.3
 set NAS_PORT=2222
 set NAS_USER=superpulpax
-set NAS_PATH=/volume1/web/labs.paxiit.com/aiscr-pmo
+set NAS_PATH=/volume1/web/_applications/pmo
 
 set ENVIRONMENT=%1
 if "%ENVIRONMENT%"=="" set ENVIRONMENT=staging
