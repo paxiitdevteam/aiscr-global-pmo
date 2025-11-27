@@ -2,7 +2,7 @@
 
 ## 🎯 Deployment Location
 
-**Production Deployment Path:** `/volume1/web/_applications/pmo/`
+**Production Deployment Path:** `/volume1/web/pmo/`
 
 This is the **correct and confirmed** location for PMO app deployment.
 
@@ -11,7 +11,7 @@ This is the **correct and confirmed** location for PMO app deployment.
 ## 📂 Deployment Structure
 
 ```
-/volume1/web/_applications/pmo/
+/volume1/web/pmo/
 ├── production/              # Production environment (LIVE)
 │   ├── frontend/
 │   │   ├── index.html
@@ -62,7 +62,7 @@ This is the **correct and confirmed** location for PMO app deployment.
 
 ### **GitHub Secret Required:**
 - **Secret Name:** `NAS_PATH`
-- **Value:** `/volume1/web/_applications/pmo`
+- **Value:** `/volume1/web/pmo`
 - **Location:** GitHub → Settings → Secrets → Actions
 
 ---
@@ -71,7 +71,7 @@ This is the **correct and confirmed** location for PMO app deployment.
 
 When creating virtual host in Web Station:
 
-- **Document Root:** `/volume1/web/_applications/pmo/production`
+- **Document Root:** `/volume1/web/pmo/production`
 - **Host Name:** `aiscr-pmo.labs.paxiit.com` (or your domain)
 - **Port:** `80` (HTTP) or `443` (HTTPS)
 
@@ -90,7 +90,7 @@ When creating virtual host in Web Station:
 ## ✅ Status
 
 **Deployment Location:** ✅ CONFIRMED  
-**Path:** `/volume1/web/_applications/pmo/`  
+**Path:** `/volume1/web/pmo/`  
 **All scripts configured:** ✅ YES  
 **Ready for deployment:** ✅ YES
 

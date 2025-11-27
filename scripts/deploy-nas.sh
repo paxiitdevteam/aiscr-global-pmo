@@ -18,7 +18,7 @@ echo ""
 NAS_HOST="192.168.1.3"
 NAS_PORT="2222"
 NAS_USER="superpulpax"
-NAS_PATH="/volume1/web/_applications/pmo"
+NAS_PATH="/volume1/web/pmo"
 ENVIRONMENT="${1:-staging}"  # staging or production
 
 # Function to print colored messages
