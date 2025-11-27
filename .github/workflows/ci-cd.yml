@@ -79,41 +79,32 @@ jobs:
           Templates/*.docx
         retention-days: 7
 
-  deploy-staging:
-    name: Deploy to Staging
+  deploy:
+    name: Deploy Application
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     environment:
-      name: staging
-      url: https://staging.aiscr-pmo.com
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
     
-    - name: Deploy to staging
-      run: |
-        echo "Deploying to staging environment..."
-        # Add your staging deployment commands here
-        # Example: rsync, scp, or cloud provider CLI
-
-  deploy-production:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: production
-      url: https://aiscr-pmo.com
+    - name: Setup Node.js (for Netlify CLI)
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
     
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - name: Install Netlify CLI
+      run: npm install -g netlify-cli
     
-    - name: Deploy to production
-      run: |
-        echo "Deploying to production environment..."
-        # Add your production deployment commands here
-        # Example: Netlify CLI, Vercel CLI, or cloud provider CLI
+    - name: Deploy to Netlify
+      uses: netlify/actions/cli@master
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      with:
+        args: deploy --dir=. --prod=${{ github.ref == 'refs/heads/main' }}
+        secrets: ${{ toJSON(secrets) }}
 

@@ -1,8 +1,11 @@
-# Netlify Configuration
+# AISCR Global PMO - Netlify Configuration
+# Standard deployment configuration
+
 [build]
   publish = "."
-  command = "echo 'No build command needed for static site'"
+  command = "python scripts/setup.sh || python scripts/setup.bat"
 
+# Redirects
 [[redirects]]
   from = "/"
   to = "/landing.html"
@@ -18,7 +21,7 @@
   to = "/download.html"
   status = 200
 
-# Headers for security
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
