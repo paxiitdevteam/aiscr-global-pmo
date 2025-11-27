@@ -227,35 +227,35 @@ jobs:
     - name: Create deployment directory
       run: |
         ssh -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }} << 'EOF'
-          mkdir -p ${{ secrets.NAS_PATH }}/production
-          mkdir -p ${{ secrets.NAS_PATH }}/production/frontend/{css,js,assets}
-          mkdir -p ${{ secrets.NAS_PATH }}/production/Templates
+          mkdir -p ${{ secrets.NAS_PATH }}
+          mkdir -p ${{ secrets.NAS_PATH }}/frontend/{css,js,assets}
+          mkdir -p ${{ secrets.NAS_PATH }}/Templates
+          mkdir -p ${{ secrets.NAS_PATH }}/backups
         EOF
     
     - name: Deploy files to NAS (Production)
       run: |
         rsync -avz --delete -e "ssh -p 2222" \
           frontend/ \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/production/frontend/
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/frontend/
         rsync -avz -e "ssh -p 2222" \
           landing.html download.html \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/production/
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/
         rsync -avz -e "ssh -p 2222" \
           Templates/ \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/production/Templates/
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/Templates/
         rsync -avz -e "ssh -p 2222" \
           *.xlsx *.zip \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/production/ 2>/dev/null || true
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/ 2>/dev/null || true
     
     - name: Set permissions on NAS
       run: |
         ssh -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }} \
-          "chmod -R 755 ${{ secrets.NAS_PATH }}/production && chown -R ${{ secrets.NAS_USER }}:users ${{ secrets.NAS_PATH }}/production 2>/dev/null || true"
+          "chmod -R 755 ${{ secrets.NAS_PATH }} && chown -R ${{ secrets.NAS_USER }}:users ${{ secrets.NAS_PATH }} 2>/dev/null || true"
     
     - name: Deployment Summary
       run: |
         echo "✅ Deployment to NAS Production complete!"
-        echo "Environment: production"
-        echo "NAS Path: ${{ secrets.NAS_PATH }}/production"
-        echo "Access URL: http://${{ secrets.NAS_HOST }}/aiscr-pmo/production/"
+        echo "NAS Path: ${{ secrets.NAS_PATH }}"
+        echo "Access URL: http://${{ secrets.NAS_HOST }}/pmo/"
 
