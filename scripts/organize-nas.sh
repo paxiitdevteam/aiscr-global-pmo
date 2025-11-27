@@ -74,12 +74,40 @@ print_step "Organizing backup files..."
 ssh -p $NAS_PORT ${NAS_USER}@${NAS_HOST} << 'EOF'
     cd /volume1/web
     
-    # Move paxiit.com backups
-    if ls paxiit.com_backup_*.tar.gz 1> /dev/null 2>&1; then
-        echo "Moving paxiit.com backups..."
+    # Move paxiit.com backups (from root and #recycle)
+    echo "Organizing paxiit.com backups..."
+    
+    # Count backups in root
+    ROOT_BACKUPS=$(ls paxiit.com_backup_*.tar.gz 2>/dev/null | wc -l)
+    if [ "$ROOT_BACKUPS" -gt 0 ]; then
+        echo "Found $ROOT_BACKUPS backup files in root, moving to paxiit-com/backups..."
         mv paxiit.com_backup_*.tar.gz _applications/paxiit-com/backups/ 2>/dev/null || true
-        echo "✅ Moved paxiit.com backups"
+        echo "✅ Moved $ROOT_BACKUPS backup files from root"
     fi
+    
+    # Move backups from #recycle if any
+    if [ -d "#recycle" ]; then
+        RECYCLE_BACKUPS=$(find #recycle -name "paxiit.com_backup_*.tar.gz" 2>/dev/null | wc -l)
+        if [ "$RECYCLE_BACKUPS" -gt 0 ]; then
+            echo "Found $RECYCLE_BACKUPS backup files in #recycle, moving to paxiit-com/backups..."
+            find #recycle -name "paxiit.com_backup_*.tar.gz" -exec mv {} _applications/paxiit-com/backups/ \; 2>/dev/null || true
+            echo "✅ Moved $RECYCLE_BACKUPS backup files from #recycle"
+        fi
+    fi
+    
+    # Verify paxiit.com folder structure
+    if [ -d "paxiit.com" ]; then
+        echo "paxiit.com folder exists, ensuring backups folder..."
+        mkdir -p paxiit.com/backups
+        # Move any backups inside paxiit.com folder
+        if ls paxiit.com/*backup*.tar.gz 2>/dev/null 1>/dev/null; then
+            mv paxiit.com/*backup*.tar.gz _applications/paxiit-com/backups/ 2>/dev/null || true
+            echo "✅ Moved backups from paxiit.com folder"
+        fi
+    fi
+    
+    TOTAL_MOVED=$(ls _applications/paxiit-com/backups/paxiit.com_backup_*.tar.gz 2>/dev/null | wc -l)
+    echo "✅ Total paxiit.com backups organized: $TOTAL_MOVED files"
     
     # Move admin backups
     if [ -d "admin_backup_20250904" ]; then
