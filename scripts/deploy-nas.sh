@@ -138,20 +138,11 @@ done
 
 print_success "Deployment package created"
 
-# Deploy to NAS using rsync (more efficient than scp)
+# Deploy to NAS using tar over SSH (most reliable)
 print_step "Deploying to NAS..."
-if command -v rsync &> /dev/null; then
-    rsync -avz --delete -e "ssh -p ${NAS_PORT}" \
-        "${DEPLOY_DIR}/" \
-        ${NAS_USER}@${NAS_HOST}:${DEPLOY_PATH}/
-    print_success "Files synced to NAS"
-else
-    # Fallback to scp
-    print_info "Using SCP (rsync not available)..."
-    cd "${DEPLOY_DIR}"
-    scp -P ${NAS_PORT} -r . ${NAS_USER}@${NAS_HOST}:${DEPLOY_PATH}/
-    print_success "Files copied to NAS"
-fi
+cd "${DEPLOY_DIR}"
+tar czf - . | ssh -p ${NAS_PORT} ${NAS_USER}@${NAS_HOST} "cd ${DEPLOY_PATH} && tar xzf -"
+print_success "Files deployed to NAS"
 
 # Set permissions on NAS
 print_step "Setting file permissions..."
@@ -172,10 +163,11 @@ echo ""
 print_success "✅ Deployment complete!"
 echo ""
 echo -e "${BLUE}📊 Deployment Information:${NC}"
-echo "  Environment: $ENVIRONMENT"
 echo "  NAS Path: $DEPLOY_PATH"
-echo "  Access URL: http://${NAS_HOST}/aiscr-pmo/$ENVIRONMENT/"
+echo "  Access URL: http://pmo.paxiit.com/"
+echo "  Landing Page: http://pmo.paxiit.com/landing.html"
+echo "  Dashboard: http://pmo.paxiit.com/frontend/index.html"
 echo ""
-print_info "Note: Update your web server configuration to serve from the deployment path"
+print_success "🎉 PMO Application is now live!"
 echo ""
 
