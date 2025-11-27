@@ -4,13 +4,13 @@
   "description": "AISCR Global PMO - Automated Excel System & Web Application",
   "main": "frontend/index.html",
   "scripts": {
-    "setup": "bash scripts/setup.sh || scripts\\setup.bat",
-    "start": "bash scripts/start-server.sh || scripts\\start-server.bat",
-    "dev": "bash scripts/start-server.sh || scripts\\start-server.bat",
+    "setup": "bash scripts/setup.sh",
+    "start": "bash scripts/start-server.sh",
+    "dev": "bash scripts/start-server.sh",
     "build": "python create_pmo_system.py && python create_word_templates.py && python create_zip.py",
-    "deploy": "bash scripts/deploy.sh || scripts\\deploy.bat",
-    "deploy:netlify": "bash scripts/deploy.sh netlify production || scripts\\deploy.bat netlify production",
-    "deploy:staging": "bash scripts/deploy.sh netlify staging || scripts\\deploy.bat netlify staging",
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:netlify": "bash scripts/deploy.sh netlify production",
+    "deploy:nas": "bash scripts/deploy-nas.sh",
     "test": "echo \"No tests specified yet\" && exit 0"
   },
   "keywords": [

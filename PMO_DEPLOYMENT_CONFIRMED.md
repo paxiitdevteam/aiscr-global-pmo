@@ -48,8 +48,7 @@ This is the **correct and confirmed** location for PMO app deployment.
 ## ✅ Deployment Configuration
 
 ### **Deployment Scripts:**
-- ✅ `scripts/deploy-nas.sh` → Uses `/volume1/web/_applications/pmo`
-- ✅ `scripts/deploy-nas.bat` → Uses `/volume1/web/_applications/pmo`
+- ✅ `scripts/deploy-nas.sh` → Uses `/volume1/web/pmo`
 - ✅ CI/CD workflow → Uses `${{ secrets.NAS_PATH }}` (should be `/volume1/web/_applications/pmo`)
 
 ### **GitHub Secret Required:**

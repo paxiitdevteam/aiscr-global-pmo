@@ -13,16 +13,17 @@ All deployment tools have been consolidated to **ONE STANDARD SOLUTION**: **Netl
    - ✅ Kept: Single `ci-cd.yml` with Netlify deployment
    - ✅ Kept: Single `netlify.toml` configuration
 
-2. ✅ **Cross-Platform Scripts Created**
-   - `scripts/setup.sh` / `scripts/setup.bat` - Project setup
-   - `scripts/start-server.sh` / `scripts/start-server.bat` - Start dev server
-   - `scripts/deploy.sh` / `scripts/deploy.bat` - Standard deployment
+2. ✅ **Bash Scripts Created**
+   - `scripts/setup.sh` - Project setup
+   - `scripts/start-server.sh` - Start dev server
+   - `scripts/deploy.sh` - Standard deployment
+   - `scripts/deploy-nas.sh` - NAS deployment
 
-3. ✅ **Multi-Platform Support**
-   - Windows: `.bat` scripts
-   - Unix/Linux/Mac: `.sh` scripts
-   - No PowerShell required
-   - Works on all platforms
+3. ✅ **Cross-Platform Support**
+   - All scripts are bash (`.sh` files)
+   - Use Git Bash on Windows
+   - Unix/Linux/Mac: Native bash
+   - No PowerShell, no .bat files
 
 ---
 
@@ -32,29 +33,27 @@ All deployment tools have been consolidated to **ONE STANDARD SOLUTION**: **Netl
 
 1. **Setup (First Time)**
    ```bash
-   # Unix/Linux/Mac
+   # All platforms (use Git Bash on Windows)
    ./scripts/setup.sh
-   
-   # Windows
-   scripts\setup.bat
+   # or
+   bash scripts/setup.sh
    ```
 
 2. **Start Development Server**
    ```bash
-   # Unix/Linux/Mac
+   # All platforms (use Git Bash on Windows)
    ./scripts/start-server.sh
-   
-   # Windows
-   scripts\start-server.bat
+   # or
+   bash scripts/start-server.sh
    ```
 
 3. **Deploy to Production**
    ```bash
-   # Unix/Linux/Mac
+   # Deploy to Netlify
    ./scripts/deploy.sh netlify production
    
-   # Windows
-   scripts\deploy.bat netlify production
+   # Deploy to NAS
+   ./scripts/deploy-nas.sh
    ```
 
 ---

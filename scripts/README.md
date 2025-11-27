@@ -9,13 +9,10 @@ Cross-platform scripts for development and deployment.
 
 **Usage:**
 ```bash
-# Unix/Linux/Mac
+# All platforms (use Git Bash on Windows)
 ./scripts/setup.sh
 # or
 bash scripts/setup.sh
-
-# Windows
-scripts\setup.bat
 ```
 
 **What it does:**
@@ -31,13 +28,10 @@ scripts\setup.bat
 
 **Usage:**
 ```bash
-# Unix/Linux/Mac
+# All platforms (use Git Bash on Windows)
 ./scripts/start-server.sh
 # or
 bash scripts/start-server.sh
-
-# Windows
-scripts\start-server.bat
 ```
 
 **What it does:**
@@ -53,11 +47,8 @@ scripts\start-server.bat
 
 **Usage:**
 ```bash
-# Unix/Linux/Mac
+# All platforms (use Git Bash on Windows)
 ./scripts/deploy.sh [platform] [environment]
-
-# Windows
-scripts\deploy.bat [platform] [environment]
 ```
 
 **Platforms:**
@@ -92,11 +83,10 @@ scripts\deploy.bat [platform] [environment]
 
 **Usage:**
 ```bash
-# Unix/Linux/Mac
-./scripts/deploy-nas.sh [staging|production]
-
-# Windows (Git Bash)
-bash scripts/deploy-nas.sh staging
+# All platforms (use Git Bash on Windows)
+./scripts/deploy-nas.sh
+# or
+bash scripts/deploy-nas.sh
 ```
 
 **What it does:**
@@ -110,7 +100,7 @@ bash scripts/deploy-nas.sh staging
 **Requirements:**
 - SSH access to NAS
 - SSH key configured (or password authentication)
-- NAS path: `/volume1/web/labs.paxiit.com/aiscr-pmo`
+- NAS path: `/volume1/web/pmo`
 
 **See:** `NAS_DEPLOYMENT.md` for detailed setup instructions
 
@@ -126,9 +116,8 @@ chmod +x scripts/*.sh
 
 ## 📝 Notes
 
-- All scripts are cross-platform compatible
-- Windows uses `.bat` files
-- Unix/Linux/Mac use `.sh` files
+- All scripts are bash scripts (`.sh` files)
+- Use Git Bash on Windows (not .bat files)
 - Scripts automatically detect Python version
 - Dependencies are installed automatically if missing
 

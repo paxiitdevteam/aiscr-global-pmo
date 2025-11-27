@@ -51,12 +51,8 @@ fi
 echo "✅ Setup complete!"
 echo ""
 echo "To start the server, run:"
-if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-    echo "  scripts\\start-server.bat"
-else
-    echo "  ./scripts/start-server.sh"
-    echo "  or"
-    echo "  bash scripts/start-server.sh"
-fi
+echo "  ./scripts/start-server.sh"
+echo "  or"
+echo "  bash scripts/start-server.sh"
 echo ""
 

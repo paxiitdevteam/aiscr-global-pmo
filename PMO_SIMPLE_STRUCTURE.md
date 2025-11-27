@@ -33,7 +33,6 @@
 
 1. ✅ **Deployment Scripts:**
    - `scripts/deploy-nas.sh` → Deploys to `/volume1/web/pmo/`
-   - `scripts/deploy-nas.bat` → Deploys to `/volume1/web/pmo/`
 
 2. ✅ **CI/CD Workflow:**
    - Staging (develop branch) → `/volume1/web/pmo/`

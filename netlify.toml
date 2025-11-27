@@ -3,7 +3,7 @@
 
 [build]
   publish = "."
-  command = "python scripts/setup.sh || python scripts/setup.bat"
+  command = "bash scripts/setup.sh && npm run build"
 
 # Redirects
 [[redirects]]
