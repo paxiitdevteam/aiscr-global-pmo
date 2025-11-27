@@ -117,12 +117,17 @@ if [ -d "frontend" ]; then
     print_success "Frontend files copied"
 fi
 
-# Copy root HTML files
-for file in landing.html download.html; do
-    if [ -f "$file" ]; then
-        cp "$file" "${DEPLOY_DIR}/"
-    fi
-done
+# Copy landing.html as index.html (default entry point)
+if [ -f "landing.html" ]; then
+    cp "landing.html" "${DEPLOY_DIR}/index.html"
+    print_success "Landing page set as index.html"
+fi
+
+# Copy download.html
+if [ -f "download.html" ]; then
+    cp "download.html" "${DEPLOY_DIR}/"
+    print_success "Download page copied"
+fi
 
 # Copy Templates
 if [ -d "Templates" ]; then
