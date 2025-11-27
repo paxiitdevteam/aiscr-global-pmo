@@ -120,21 +120,21 @@ npm run setup
 # or
 ./scripts/setup.sh
 # or
-scripts\setup.bat
+bash scripts/setup.sh
 
 # Start server
 npm start
 # or
 ./scripts/start-server.sh
 # or
-scripts\start-server.bat
+bash scripts/start-server.sh
 
 # Deploy
 npm run deploy
 # or
 ./scripts/deploy.sh
 # or
-scripts\deploy.bat
+bash scripts/deploy.sh
 ```
 
 ---
