@@ -45,15 +45,10 @@ if [ "$ENVIRONMENT" != "staging" ] && [ "$ENVIRONMENT" != "production" ]; then
     exit 1
 fi
 
-# Set deployment path based on environment
-if [ "$ENVIRONMENT" = "production" ]; then
-    DEPLOY_PATH="${NAS_PATH}/production"
-else
-    DEPLOY_PATH="${NAS_PATH}/staging"
-fi
+# PMO deployment - /volume1/web/pmo/ is the production folder
+DEPLOY_PATH="${NAS_PATH}"
 
-print_info "Environment: $ENVIRONMENT"
-print_info "Deployment Path: $DEPLOY_PATH"
+print_info "Deployment Path: $DEPLOY_PATH (Production)"
 print_info "NAS: ${NAS_USER}@${NAS_HOST}:${NAS_PORT}"
 echo ""
 
@@ -101,6 +96,7 @@ ssh -p $NAS_PORT ${NAS_USER}@${NAS_HOST} << EOF
     mkdir -p ${DEPLOY_PATH}/frontend/js
     mkdir -p ${DEPLOY_PATH}/frontend/assets
     mkdir -p ${DEPLOY_PATH}/Templates
+    mkdir -p ${DEPLOY_PATH}/backups
     echo "Directory structure created"
 EOF
 print_success "Directory structure ready"

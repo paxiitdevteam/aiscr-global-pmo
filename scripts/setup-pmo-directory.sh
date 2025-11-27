@@ -31,18 +31,14 @@ print_success() {
 print_step "Creating PMO directory structure..."
 
 ssh -p $NAS_PORT ${NAS_USER}@${NAS_HOST} << EOF
-    # Create main PMO directory
+    # Create main PMO directory (this IS the production folder)
     mkdir -p ${PMO_PATH}
     
-    # Create production structure
-    mkdir -p ${PMO_PATH}/production
-    mkdir -p ${PMO_PATH}/production/frontend/{css,js,assets}
-    mkdir -p ${PMO_PATH}/production/Templates
+    # Create frontend structure
+    mkdir -p ${PMO_PATH}/frontend/{css,js,assets}
     
-    # Create staging structure
-    mkdir -p ${PMO_PATH}/staging
-    mkdir -p ${PMO_PATH}/staging/frontend/{css,js,assets}
-    mkdir -p ${PMO_PATH}/staging/Templates
+    # Create Templates folder
+    mkdir -p ${PMO_PATH}/Templates
     
     # Create backups folder
     mkdir -p ${PMO_PATH}/backups
@@ -69,16 +65,16 @@ print_step "Verifying structure..."
 ssh -p $NAS_PORT ${NAS_USER}@${NAS_HOST} << EOF
     echo "📊 PMO Directory Structure:"
     echo ""
-    tree -L 3 ${PMO_PATH} 2>/dev/null || find ${PMO_PATH} -type d | sort
+    tree -L 2 ${PMO_PATH} 2>/dev/null || find ${PMO_PATH} -type d | sort
     echo ""
     echo "✅ Structure verified"
 EOF
 
 print_success "PMO directory setup complete!"
 echo ""
-echo -e "${GREEN}📍 PMO Location: ${PMO_PATH}${NC}"
-echo -e "${GREEN}📁 Production: ${PMO_PATH}/production${NC}"
-echo -e "${GREEN}📁 Staging: ${PMO_PATH}/staging${NC}"
+echo -e "${GREEN}📍 PMO Location (Production): ${PMO_PATH}${NC}"
+echo -e "${GREEN}📁 Frontend: ${PMO_PATH}/frontend${NC}"
+echo -e "${GREEN}📁 Templates: ${PMO_PATH}/Templates${NC}"
 echo -e "${GREEN}📁 Backups: ${PMO_PATH}/backups${NC}"
 echo ""
 

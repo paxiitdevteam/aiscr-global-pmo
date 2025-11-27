@@ -11,25 +11,17 @@ This is the **correct and confirmed** location for PMO app deployment.
 ## 📂 Deployment Structure
 
 ```
-/volume1/web/pmo/
-├── production/              # Production environment (LIVE)
-│   ├── frontend/
-│   │   ├── index.html
-│   │   ├── css/
-│   │   ├── js/
-│   │   └── assets/
-│   ├── Templates/
-│   ├── landing.html
-│   ├── download.html
-│   ├── AISCR_PMO_Full_Automated_System.xlsx
-│   └── AISCR_PMO_Complete_System.zip
-│
-├── staging/                # Staging environment (TESTING)
-│   ├── frontend/
-│   ├── Templates/
-│   ├── landing.html
-│   └── download.html
-│
+/volume1/web/pmo/           # Production folder (LIVE)
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   ├── js/
+│   └── assets/
+├── Templates/
+├── landing.html
+├── download.html
+├── AISCR_PMO_Full_Automated_System.xlsx
+├── AISCR_PMO_Complete_System.zip
 └── backups/               # PMO-specific backups
 ```
 
@@ -71,7 +63,7 @@ This is the **correct and confirmed** location for PMO app deployment.
 
 When creating virtual host in Web Station:
 
-- **Document Root:** `/volume1/web/pmo/production`
+- **Document Root:** `/volume1/web/pmo`
 - **Host Name:** `aiscr-pmo.labs.paxiit.com` (or your domain)
 - **Port:** `80` (HTTP) or `443` (HTTPS)
 

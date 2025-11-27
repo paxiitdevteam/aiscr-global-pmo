@@ -109,7 +109,7 @@ jobs:
         secrets: ${{ toJSON(secrets) }}
 
   deploy-nas-staging:
-    name: Deploy to NAS (Staging)
+    name: Deploy to NAS (Staging/Testing)
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/develop'
@@ -151,37 +151,37 @@ jobs:
     - name: Create deployment directory
       run: |
         ssh -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }} << 'EOF'
-          mkdir -p ${{ secrets.NAS_PATH }}/staging
-          mkdir -p ${{ secrets.NAS_PATH }}/staging/frontend/{css,js,assets}
-          mkdir -p ${{ secrets.NAS_PATH }}/staging/Templates
+          mkdir -p ${{ secrets.NAS_PATH }}
+          mkdir -p ${{ secrets.NAS_PATH }}/frontend/{css,js,assets}
+          mkdir -p ${{ secrets.NAS_PATH }}/Templates
+          mkdir -p ${{ secrets.NAS_PATH }}/backups
         EOF
     
-    - name: Deploy files to NAS (Staging)
+    - name: Deploy files to NAS
       run: |
         rsync -avz --delete -e "ssh -p 2222" \
           frontend/ \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/staging/frontend/
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/frontend/
         rsync -avz -e "ssh -p 2222" \
           landing.html download.html \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/staging/
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/
         rsync -avz -e "ssh -p 2222" \
           Templates/ \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/staging/Templates/
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/Templates/
         rsync -avz -e "ssh -p 2222" \
           *.xlsx *.zip \
-          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/staging/ 2>/dev/null || true
+          ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }}:${{ secrets.NAS_PATH }}/ 2>/dev/null || true
     
     - name: Set permissions on NAS
       run: |
         ssh -p 2222 ${{ secrets.NAS_USER }}@${{ secrets.NAS_HOST }} \
-          "chmod -R 755 ${{ secrets.NAS_PATH }}/staging && chown -R ${{ secrets.NAS_USER }}:users ${{ secrets.NAS_PATH }}/staging 2>/dev/null || true"
+          "chmod -R 755 ${{ secrets.NAS_PATH }} && chown -R ${{ secrets.NAS_USER }}:users ${{ secrets.NAS_PATH }} 2>/dev/null || true"
     
     - name: Deployment Summary
       run: |
-        echo "✅ Deployment to NAS Staging complete!"
-        echo "Environment: staging"
-        echo "NAS Path: ${{ secrets.NAS_PATH }}/staging"
-        echo "Access URL: http://${{ secrets.NAS_HOST }}/aiscr-pmo/staging/"
+        echo "✅ Deployment to NAS complete!"
+        echo "NAS Path: ${{ secrets.NAS_PATH }}"
+        echo "Access URL: http://${{ secrets.NAS_HOST }}/pmo/"
 
   deploy-nas-production:
     name: Deploy to NAS (Production)

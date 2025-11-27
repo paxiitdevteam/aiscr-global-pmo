@@ -16,23 +16,12 @@ set NAS_PATH=/volume1/web/pmo
 set ENVIRONMENT=%1
 if "%ENVIRONMENT%"=="" set ENVIRONMENT=staging
 
-echo ℹ️  Environment: %ENVIRONMENT%
+echo ℹ️  Deployment: Production
 echo ℹ️  NAS: %NAS_USER%@%NAS_HOST%:%NAS_PORT%
 echo.
 
-REM Validate environment
-if not "%ENVIRONMENT%"=="staging" if not "%ENVIRONMENT%"=="production" (
-    echo ❌ Invalid environment: %ENVIRONMENT%
-    echo Usage: %0 [staging^|production]
-    exit /b 1
-)
-
-REM Set deployment path
-if "%ENVIRONMENT%"=="production" (
-    set DEPLOY_PATH=%NAS_PATH%/production
-) else (
-    set DEPLOY_PATH=%NAS_PATH%/staging
-)
+REM PMO deployment - /volume1/web/pmo/ is the production folder
+set DEPLOY_PATH=%NAS_PATH%
 
 echo ℹ️  Deployment Path: %DEPLOY_PATH%
 echo.
@@ -77,6 +66,7 @@ echo 📦 Creating deployment directory on NAS...
     echo mkdir -p %DEPLOY_PATH%/frontend/js
     echo mkdir -p %DEPLOY_PATH%/frontend/assets
     echo mkdir -p %DEPLOY_PATH%/Templates
+    echo mkdir -p %DEPLOY_PATH%/backups
 ) | ssh -p %NAS_PORT% %NAS_USER%@%NAS_HOST% "bash"
 echo ✅ Directory structure ready
 echo.
