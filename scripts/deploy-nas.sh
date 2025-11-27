@@ -110,9 +110,10 @@ DEPLOY_DIR="${TEMP_DIR}/deploy"
 
 mkdir -p "${DEPLOY_DIR}"
 
-# Copy frontend files
+# Copy frontend files (maintain frontend folder structure)
 if [ -d "frontend" ]; then
-    cp -r frontend/* "${DEPLOY_DIR}/"
+    mkdir -p "${DEPLOY_DIR}/frontend"
+    cp -r frontend/* "${DEPLOY_DIR}/frontend/"
     print_success "Frontend files copied"
 fi
 
