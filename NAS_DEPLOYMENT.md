@@ -134,58 +134,60 @@ Paste the entire output (including `-----BEGIN` and `-----END` lines) into GitHu
 
 ### **How CI/CD Works**
 
-**Automatic Deployment:**
-- **Push to `develop` branch** → Deploys to **staging** on NAS
-- **Push to `main` branch** → Deploys to **production** on NAS
+**Automatic Deployment (Staging Only):**
+- **Push to `develop` branch** → **Automatically deploys** to **staging** on NAS
+- No approval required for staging
+
+**Manual Approval Required (Production):**
+- **Push to `main` branch** → **Requires manual approval** before deploying to production
+- GitHub will send notification for approval
+- Must validate functionality in staging first
+- After approval → Deploys to production
 
 **Manual Deployment:**
-- Go to **Actions** tab → **Deploy to NAS** → **Run workflow**
+- Go to **Actions** tab → **Deploy to NAS (Production)** → **Run workflow**
 
 ---
 
-## 🌐 Web Server Configuration
+## 🌐 Web Server Configuration (Reverse Proxy + Virtual Host)
 
-### **Option 1: Using Synology Web Station**
+### **Your Setup:**
+- **Reverse Proxy:** Already configured and running
+- **Virtual Host:** Currently empty (needs configuration)
+- **Method:** Use reverse proxy to route to virtual host
 
-1. **Enable Web Station** in Package Center
+### **Option 1: Synology Web Station (Recommended)**
+
+1. **Enable Web Station** in Package Center (if not already enabled)
+
 2. **Create Virtual Host:**
-   - Domain: `aiscr-pmo.labs.paxiit.com` (or your preferred domain)
-   - Document Root: `/volume1/web/labs.paxiit.com/aiscr-pmo/staging`
-   - Port: 80/443
+   - Web Station → Virtual Host → Create
+   - **Host Name:** `aiscr-pmo.labs.paxiit.com`
+   - **Port:** 80 (HTTP) or 443 (HTTPS)
+   - **Document Root:** `/volume1/web/labs.paxiit.com/aiscr-pmo/production`
+   - **HTTP Backend:** Nginx (recommended) or Apache
+   - **PHP Version:** Not required (static HTML/JS app)
 
-3. **Access URLs:**
-   - Staging: `http://aiscr-pmo.labs.paxiit.com/staging/`
-   - Production: `http://aiscr-pmo.labs.paxiit.com/production/`
+3. **Configure Reverse Proxy:**
+   - Control Panel → Application Portal → Reverse Proxy
+   - **Source:** `http://aiscr-pmo.labs.paxiit.com` (or your domain)
+   - **Destination:** `http://localhost:80` (or port of virtual host)
+   - **Protocol:** HTTP
 
-### **Option 2: Using Nginx (if installed)**
+4. **Access URLs:**
+   - **Production:** `http://aiscr-pmo.labs.paxiit.com/` (via reverse proxy)
+   - **Staging:** `http://aiscr-pmo.labs.paxiit.com/staging/` (via reverse proxy)
 
-Create `/etc/nginx/conf.d/aiscr-pmo.conf`:
+### **Option 2: Manual Nginx Configuration**
 
-```nginx
-server {
-    listen 80;
-    server_name aiscr-pmo.labs.paxiit.com;
-    
-    # Staging
-    location /staging {
-        alias /volume1/web/labs.paxiit.com/aiscr-pmo/staging;
-        index index.html;
-        try_files $uri $uri/ /staging/frontend/index.html;
-    }
-    
-    # Production
-    location /production {
-        alias /volume1/web/labs.paxiit.com/aiscr-pmo/production;
-        index index.html;
-        try_files $uri $uri/ /production/frontend/index.html;
-    }
-    
-    # Default to staging
-    location / {
-        return 301 /staging/;
-    }
-}
-```
+If you prefer manual nginx configuration, see `deployment/nginx/aiscr-pmo.conf` for complete configuration.
+
+**Steps:**
+1. Copy config file to NAS: `/etc/nginx/conf.d/aiscr-pmo.conf`
+2. Test configuration: `sudo nginx -t`
+3. Reload nginx: `sudo systemctl reload nginx`
+
+**See:** `deployment/README.md` for detailed setup instructions
 
 ---
 
