@@ -1,0 +1,30 @@
+{
+  "name": "aiscr-global-pmo",
+  "version": "1.0.0",
+  "description": "AISCR Global PMO - Automated Excel System & Web Application",
+  "main": "frontend/index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "python create_pmo_system.py && python create_word_templates.py && python create_zip.py",
+    "test": "echo \"No tests specified yet\" && exit 0"
+  },
+  "keywords": [
+    "pmo",
+    "project-management",
+    "excel",
+    "dashboard",
+    "web-application"
+  ],
+  "author": "AISCR Global",
+  "license": "UNLICENSED",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/aiscr-pmo.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+

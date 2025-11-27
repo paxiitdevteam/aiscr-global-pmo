@@ -1,0 +1,28 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Excel files (binary)
+*.xlsx binary
+*.xls binary
+
+# Word files (binary)
+*.docx binary
+*.doc binary
+
+# Archive files (binary)
+*.zip binary
+*.tar.gz binary
+
+# Images (binary)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+
+# Fonts (binary)
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
