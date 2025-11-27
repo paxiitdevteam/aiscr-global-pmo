@@ -64,6 +64,18 @@ if "%DEPLOY_PLATFORM%"=="netlify" (
     )
     echo ✅ Deployed to Netlify
     
+) else if "%DEPLOY_PLATFORM%"=="nas" (
+    echo ℹ️  Deploying to NAS...
+    
+    REM Check if NAS deployment script exists
+    if exist scripts\deploy-nas.sh (
+        bash scripts/deploy-nas.sh %ENVIRONMENT%
+    ) else (
+        echo ❌ NAS deployment script not found
+        exit /b 1
+    )
+    echo ✅ Deployed to NAS
+    
 ) else if "%DEPLOY_PLATFORM%"=="manual" (
     echo ℹ️  Preparing files for manual deployment...
     echo Files ready in current directory
@@ -76,7 +88,7 @@ if "%DEPLOY_PLATFORM%"=="netlify" (
     
 ) else (
     echo ❌ Unknown deployment platform: %DEPLOY_PLATFORM%
-    echo Supported platforms: netlify, manual
+    echo Supported platforms: netlify, nas, manual
     exit /b 1
 )
 

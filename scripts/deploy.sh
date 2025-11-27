@@ -99,6 +99,19 @@ case $DEPLOY_PLATFORM in
         print_success "Deployed to GitHub Pages"
         ;;
     
+    nas)
+        print_info "Deploying to NAS..."
+        
+        # Check if NAS deployment script exists
+        if [ -f "scripts/deploy-nas.sh" ]; then
+            bash scripts/deploy-nas.sh "$ENVIRONMENT"
+        else
+            print_error "NAS deployment script not found"
+            exit 1
+        fi
+        print_success "Deployed to NAS"
+        ;;
+    
     manual)
         print_info "Preparing files for manual deployment..."
         echo "Files ready in current directory"
@@ -112,7 +125,7 @@ case $DEPLOY_PLATFORM in
     
     *)
         print_error "Unknown deployment platform: $DEPLOY_PLATFORM"
-        echo "Supported platforms: netlify, github-pages, manual"
+        echo "Supported platforms: netlify, github-pages, nas, manual"
         exit 1
         ;;
 esac
