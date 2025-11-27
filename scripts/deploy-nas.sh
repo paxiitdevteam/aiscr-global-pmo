@@ -19,7 +19,6 @@ NAS_HOST="192.168.1.3"
 NAS_PORT="2222"
 NAS_USER="superpulpax"
 NAS_PATH="/volume1/web/pmo"
-ENVIRONMENT="${1:-staging}"  # staging or production
 
 # Function to print colored messages
 print_success() {
@@ -37,13 +36,6 @@ print_info() {
 print_step() {
     echo -e "${BLUE}📦 $1${NC}"
 }
-
-# Validate environment
-if [ "$ENVIRONMENT" != "staging" ] && [ "$ENVIRONMENT" != "production" ]; then
-    print_error "Invalid environment: $ENVIRONMENT"
-    echo "Usage: $0 [staging|production]"
-    exit 1
-fi
 
 # PMO deployment - /volume1/web/pmo/ is the production folder
 DEPLOY_PATH="${NAS_PATH}"
