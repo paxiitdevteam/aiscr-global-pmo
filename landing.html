@@ -519,7 +519,7 @@
                 <p>Everything you need to manage your projects effectively</p>
             </div>
             <div class="features-grid">
-                <a href="/dashboard#portfolio" class="feature-card fade-in">
+                <a href="/dashboard#portfolio" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
@@ -575,28 +575,28 @@
                     <h3>Project Monitoring</h3>
                     <p>Real-time project monitoring with progress tracking, milestone management, and performance dashboards.</p>
                 </a>
-                <a href="/dashboard#reports" class="feature-card fade-in">
+                <a href="/dashboard#reports" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-chart-bar"></i>
                     </div>
                     <h3>Analytics & Reports</h3>
                     <p>Generate comprehensive reports with KPI dashboards, visual charts, and real-time analytics.</p>
                 </a>
-                <a href="/dashboard#reports" class="feature-card fade-in">
+                <a href="/dashboard#reports" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon" style="background: linear-gradient(135deg, #F2C811, #F28F16);">
                         <i class="fab fa-microsoft"></i>
                     </div>
                     <h3>Power BI Integration</h3>
                     <p>Connect to Microsoft Power BI for advanced data visualization, interactive dashboards, and enterprise-level analytics.</p>
                 </a>
-                <a href="/dashboard#reports" class="feature-card fade-in">
+                <a href="/dashboard#reports" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon" style="background: linear-gradient(135deg, #E97627, #C63D2D);">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3>Tableau Integration</h3>
                     <p>Leverage Tableau's powerful visual analytics for deep insights, data exploration, and strategic decision-making.</p>
                 </a>
-                <a href="/dashboard#reports" class="feature-card fade-in">
+                <a href="/dashboard#reports" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon" style="background: linear-gradient(135deg, #dc3545, #c82333);">
                         <i class="fas fa-file-export"></i>
                     </div>
@@ -689,6 +689,86 @@
                     });
                 }
             });
+        });
+        
+        // Block dashboard access in production
+        function blockDashboardAccess(event) {
+            if (window.ENV && window.ENV.demoMode) {
+                event.preventDefault();
+                event.stopPropagation();
+                alert('🔒 Access Restricted\n\nDashboard access is not available in the demonstration version for security reasons.\n\nFull dashboard functionality is available in the development environment.');
+                return false;
+            }
+            return true;
+        }
+        
+        // Block download page access in production
+        function blockDownloadAccess(event) {
+            if (window.ENV && window.ENV.demoMode) {
+                event.preventDefault();
+                event.stopPropagation();
+                alert('🔒 Access Restricted\n\nDownload page access is not available in the demonstration version for security reasons.\n\nFull download functionality is available in the development environment.');
+                return false;
+            }
+            return true;
+        }
+        
+        // Block all dashboard and download links on page load (production only)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ENV && window.ENV.demoMode) {
+                // Find all dashboard links
+                const dashboardLinks = document.querySelectorAll('a[href*="/dashboard"], a[href*="dashboard"]');
+                dashboardLinks.forEach(link => {
+                    link.setAttribute('data-original-href', link.getAttribute('href'));
+                    link.setAttribute('href', '#');
+                    link.style.cursor = 'not-allowed';
+                    link.style.opacity = '0.7';
+                    link.title = 'Dashboard access restricted in demo mode';
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        alert('🔒 Access Restricted\n\nDashboard access is not available in the demonstration version for security reasons.');
+                        return false;
+                    });
+                });
+                
+                // Find all download links
+                const downloadLinks = document.querySelectorAll('a[href*="/download"], a[href*="download"]');
+                downloadLinks.forEach(link => {
+                    // Skip if it's a download attribute (file download)
+                    if (link.hasAttribute('download')) return;
+                    
+                    link.setAttribute('data-original-href', link.getAttribute('href'));
+                    link.setAttribute('href', '#');
+                    link.style.cursor = 'not-allowed';
+                    link.style.opacity = '0.7';
+                    link.title = 'Download page access restricted in demo mode';
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        alert('🔒 Access Restricted\n\nDownload page access is not available in the demonstration version for security reasons.');
+                        return false;
+                    });
+                });
+                
+                // Update button text to show it's disabled
+                const dashboardButtons = document.querySelectorAll('a[href*="dashboard"]');
+                dashboardButtons.forEach(btn => {
+                    if (btn.textContent.includes('Dashboard') || btn.textContent.includes('Launch') || btn.textContent.includes('Access')) {
+                        btn.innerHTML = '<i class="fas fa-lock"></i> Dashboard (Restricted)';
+                        btn.style.opacity = '0.6';
+                    }
+                });
+                
+                // Update download button text
+                const downloadButtons = document.querySelectorAll('a[href*="/download"]');
+                downloadButtons.forEach(btn => {
+                    if (btn.textContent.includes('Download') && !btn.hasAttribute('download')) {
+                        btn.innerHTML = '<i class="fas fa-lock"></i> Downloads (Restricted)';
+                        btn.style.opacity = '0.6';
+                    }
+                });
+            }
         });
     </script>
 </body>
