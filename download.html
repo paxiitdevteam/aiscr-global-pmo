@@ -221,6 +221,111 @@
         body {
             padding-top: 70px;
         }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                padding-top: 70px;
+            }
+            
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .header p {
+                font-size: 1em;
+            }
+            
+            .download-section {
+                padding: 20px;
+            }
+            
+            .download-button {
+                padding: 15px 20px;
+                font-size: 1.1em;
+            }
+            
+            .file-info {
+                padding: 12px;
+            }
+            
+            .file-info h3 {
+                font-size: 1.1em;
+            }
+            
+            .file-info ul {
+                font-size: 0.9em;
+            }
+            
+            .contents-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .content-item {
+                padding: 12px;
+            }
+            
+            .top-nav {
+                padding: 10px 15px;
+            }
+            
+            .top-nav-logo {
+                font-size: 1.1em;
+            }
+            
+            .top-nav-logo span {
+                display: none;
+            }
+            
+            .top-nav-links {
+                gap: 10px;
+                font-size: 0.85em;
+            }
+            
+            .top-nav-links a {
+                padding: 5px 10px;
+            }
+            
+            .top-nav-links .btn-nav {
+                padding: 6px 15px;
+                font-size: 0.85em;
+            }
+            
+            div[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            div[style*="columns: 2"] {
+                columns: 1 !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .download-button {
+                padding: 12px 15px;
+                font-size: 1em;
+            }
+            
+            .top-nav-links {
+                gap: 8px;
+                font-size: 0.8em;
+            }
+        }
     </style>
 </head>
 <body>

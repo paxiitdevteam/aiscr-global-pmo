@@ -373,30 +373,92 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5em;
+                font-size: 2em;
             }
 
             .hero p {
-                font-size: 1.1em;
+                font-size: 1em;
+            }
+            
+            .hero-content {
+                padding: 40px 20px;
             }
 
             nav {
-                padding: 15px 20px;
+                padding: 12px 15px;
+            }
+            
+            .logo span {
+                font-size: 1.1em;
             }
 
             .nav-links {
-                gap: 15px;
+                gap: 10px;
+                font-size: 0.85em;
+            }
+            
+            .btn-nav {
+                padding: 8px 15px;
                 font-size: 0.9em;
             }
 
             .features,
             .stats,
             .cta {
-                padding: 60px 20px;
+                padding: 40px 20px;
             }
 
             .section-header h2 {
-                font-size: 2em;
+                font-size: 1.8em;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            .feature-card h3 {
+                font-size: 1.2em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .btn-hero {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5em;
+            }
+            
+            .hero p {
+                font-size: 0.95em;
+            }
+            
+            .logo span {
+                display: none;
+            }
+            
+            .nav-links {
+                gap: 8px;
+                font-size: 0.8em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-card {
+                padding: 15px;
             }
         }
 

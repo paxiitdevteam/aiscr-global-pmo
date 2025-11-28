@@ -29,22 +29,25 @@ function showComingSoon(featureName, description = '') {
         padding: 40px;
         max-width: 500px;
         width: 90%;
+        max-width: calc(100vw - 40px);
         text-align: center;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         animation: slideUp 0.3s;
+        max-height: 90vh;
+        overflow-y: auto;
     `;
     
     modal.innerHTML = `
         <div style="width: 100px; height: 100px; margin: 0 auto 20px; background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
             <i class="fas fa-clock" style="font-size: 50px; color: white;"></i>
         </div>
-        <h2 style="color: #1F4E78; margin-bottom: 15px;">${featureName}</h2>
-        <div style="background: linear-gradient(135deg, #2EC4B6 0%, #1F4E78 100%); color: white; padding: 8px 20px; border-radius: 20px; display: inline-block; margin-bottom: 20px; font-weight: bold;">
+        <h2 style="color: #1F4E78; margin-bottom: 15px; font-size: clamp(1.2em, 4vw, 1.5em);">${featureName}</h2>
+        <div style="background: linear-gradient(135deg, #2EC4B6 0%, #1F4E78 100%); color: white; padding: 8px 20px; border-radius: 20px; display: inline-block; margin-bottom: 20px; font-weight: bold; font-size: clamp(0.9em, 3vw, 1.1em);">
             <i class="fas fa-hourglass-half"></i> Coming Soon
         </div>
-        <p style="color: #666; line-height: 1.6; margin-bottom: 30px;">${message}</p>
+        <p style="color: #666; line-height: 1.6; margin-bottom: 30px; font-size: clamp(0.9em, 3vw, 1em); padding: 0 10px;">${message}</p>
         <button onclick="this.closest('[style*=\"position: fixed\"]').remove()" 
-                style="background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: transform 0.3s;"
+                style="background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: transform 0.3s; width: 100%; max-width: 200px; font-size: clamp(0.9em, 3vw, 1em);"
                 onmouseover="this.style.transform='translateY(-2px)'"
                 onmouseout="this.style.transform='translateY(0)'">
             <i class="fas fa-check"></i> Got it
