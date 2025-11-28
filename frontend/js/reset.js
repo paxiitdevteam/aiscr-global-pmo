@@ -127,6 +127,11 @@ function resetAllData() {
 
 // Reset data but keep structure (set to zero values)
 function resetDataToZero() {
+    // Block reset in demo mode
+    if (window.ENV && window.ENV.demoMode) {
+        alert('🔒 DEMO MODE\n\nReset operations are disabled in the demonstration version for security.\n\nFull functionality is available in the development environment.');
+        return;
+    }
     const confirmed = confirm(
         '⚠️ Reset Data to Zero\n\n' +
         'This will reset all numeric values to zero but keep the data structure.\n\n' +

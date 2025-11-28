@@ -8,6 +8,14 @@ class ModalManager {
     }
 
     openModal(module, action = 'create', index = null) {
+        // Check if in demo mode (production)
+        if (window.ENV && window.ENV.demoMode) {
+            if (action === 'create' || action === 'edit' || action === 'delete') {
+                alert('🔒 DEMO MODE\n\nCreate, Edit, and Delete operations are disabled in the demonstration version for security.\n\nFull functionality is available in the development environment.');
+                return;
+            }
+        }
+        
         this.currentModule = module;
         this.currentAction = action;
         this.currentIndex = index;
@@ -405,6 +413,11 @@ class ModalManager {
     }
 
     saveData(module) {
+        // Block save in demo mode
+        if (window.ENV && window.ENV.demoMode) {
+            alert('🔒 DEMO MODE\n\nSave operations are disabled in the demonstration version for security.\n\nFull functionality is available in the development environment.');
+            return;
+        }
         const form = this.currentModal.querySelector('.modal-body');
         const inputs = form.querySelectorAll('input, select, textarea');
         let isValid = true;
@@ -541,6 +554,12 @@ class ModalManager {
     }
 
     deleteItem(module, index) {
+        // Block delete in demo mode
+        if (window.ENV && window.ENV.demoMode) {
+            alert('🔒 DEMO MODE\n\nDelete operations are disabled in the demonstration version for security.\n\nFull functionality is available in the development environment.');
+            return;
+        }
+        
         if (confirm(`Are you sure you want to delete this ${this.getModuleName(module)}?`)) {
             sampleData[module].splice(index, 1);
             this.reloadTable(module);

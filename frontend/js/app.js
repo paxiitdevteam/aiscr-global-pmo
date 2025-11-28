@@ -349,8 +349,11 @@ function loadPortfolioTable() {
             </td>
             <td>
                 <div class="action-buttons">
+                    ${(window.ENV && window.ENV.demoMode) ? '' : `
                     <button class="action-btn edit" onclick="modalManager.openModal('portfolio', 'edit', ${originalIndex})"><i class="fas fa-edit"></i></button>
                     <button class="action-btn delete" onclick="modalManager.deleteItem('portfolio', ${originalIndex})"><i class="fas fa-trash"></i></button>
+                    `}
+                    ${(window.ENV && window.ENV.demoMode) ? '<span style="color: #999; font-size: 0.85em;">View Only</span>' : ''}
                 </div>
             </td>
         `;
@@ -793,7 +796,14 @@ function loadStakeholdersData() {
     
     tbody.innerHTML = '';
     
-    sampleData.stakeholders.forEach((item, index) => {
+    // Limit items in demo mode
+    let displayData = sampleData.stakeholders;
+    if (window.ENV && window.ENV.demoMode && window.ENV.config.maxItems) {
+        displayData = sampleData.stakeholders.slice(0, window.ENV.config.maxItems);
+    }
+    
+    const isDemoMode = window.ENV && window.ENV.demoMode;
+    displayData.forEach((item, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><strong>${item.name}</strong></td>
@@ -803,8 +813,11 @@ function loadStakeholdersData() {
             <td>${item.strategy}</td>
             <td>
                 <div class="action-buttons">
+                    ${isDemoMode ? '' : `
                     <button class="action-btn edit" onclick="modalManager.openModal('stakeholders', 'edit', ${index})"><i class="fas fa-edit"></i></button>
                     <button class="action-btn delete" onclick="modalManager.deleteItem('stakeholders', ${index})"><i class="fas fa-trash"></i></button>
+                    `}
+                    ${isDemoMode ? '<span style="color: #999; font-size: 0.85em;">View Only</span>' : ''}
                 </div>
             </td>
         `;

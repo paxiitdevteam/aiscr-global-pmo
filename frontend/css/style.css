@@ -25,6 +25,46 @@ body {
     line-height: 1.6;
 }
 
+/* Demo Mode Banner */
+#demo-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    font-weight: bold;
+    z-index: 10001;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#demo-banner button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+
+#demo-banner button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Adjust body padding when demo banner is present */
+body:has(#demo-banner) {
+    padding-top: 50px;
+}
+
 /* Sidebar */
 .sidebar {
     position: fixed;

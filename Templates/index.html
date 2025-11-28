@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AISCR PMO - Word Templates</title>
+    <title>AISCR GLOBAL PMO - Templates (Coming Soon)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,8 +16,146 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            padding-top: 90px;
+        }
+        
+        .coming-soon-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .icon-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .icon-wrapper i {
+            font-size: 60px;
+            color: white;
+        }
+        
+        h1 {
+            color: #1F4E78;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .coming-soon-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #2EC4B6 0%, #1F4E78 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(46, 196, 182, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(46, 196, 182, 0.8); }
+        }
+        
+        .message {
+            color: #666;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+        
+        .features-list {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .features-list h3 {
+            color: #1F4E78;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #2EC4B6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-item i {
+            color: #2EC4B6;
+            font-size: 1.2em;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(31, 78, 120, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1F4E78;
+            border: 2px solid #1F4E78;
+        }
+        
+        .btn-secondary:hover {
+            background: #1F4E78;
+            color: white;
         }
         
         .top-nav {
@@ -49,10 +188,6 @@
             gap: 10px;
         }
         
-        .top-nav-logo i {
-            color: #2EC4B6;
-        }
-        
         .top-nav-links {
             display: flex;
             gap: 20px;
@@ -70,297 +205,199 @@
             color: #2EC4B6;
         }
         
-        .top-nav-links .btn-nav {
-            background: #2EC4B6;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            transition: all 0.3s;
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                padding-top: 80px;
+            }
+            
+            .coming-soon-container {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+            
+            .icon-wrapper {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 20px;
+            }
+            
+            .icon-wrapper i {
+                font-size: 40px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+            
+            .coming-soon-badge {
+                font-size: 0.9em;
+                padding: 8px 20px;
+                margin-bottom: 20px;
+            }
+            
+            .message {
+                font-size: 1em;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+            
+            .features-list {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+            
+            .features-list h3 {
+                font-size: 1.1em;
+                margin-bottom: 15px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .feature-item {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 0.95em;
+                justify-content: center;
+            }
+            
+            .top-nav {
+                padding: 10px 15px;
+            }
+            
+            .top-nav-logo {
+                font-size: 1.1em;
+            }
+            
+            .top-nav-logo span {
+                display: none;
+            }
+            
+            .top-nav-links {
+                gap: 10px;
+                font-size: 0.9em;
+            }
+            
+            .top-nav-links a {
+                padding: 5px 10px;
+            }
         }
         
-        .top-nav-links .btn-nav:hover {
-            background: #26b3a7;
-            transform: translateY(-2px);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #2EC4B6;
-        }
-        
-        .header h1 {
-            color: #1F4E78;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #2EC4B6;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        
-        .templates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .template-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .template-card:hover {
-            border-color: #2EC4B6;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .template-card h3 {
-            color: #1F4E78;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-        
-        .template-card p {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-        
-        .download-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #2EC4B6;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-        
-        .download-btn:hover {
-            background: #26b3a7;
-        }
-        
-        .info-box {
-            background: #e8f4f8;
-            border-left: 4px solid #2EC4B6;
-            padding: 15px;
-            margin-bottom: 30px;
-            border-radius: 5px;
-        }
-        
-        .info-box p {
-            color: #333;
-            margin: 5px 0;
+        @media (max-width: 480px) {
+            .coming-soon-container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .message {
+                font-size: 0.95em;
+            }
+            
+            .features-list {
+                padding: 15px 10px;
+            }
+            
+            .feature-item {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+            
+            .top-nav-links a {
+                font-size: 0.8em;
+                padding: 5px 8px;
+            }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Top Navigation -->
     <nav class="top-nav">
         <div class="top-nav-content">
-            <a href="../landing.html" class="top-nav-logo">
+            <a href="/" class="top-nav-logo">
                 <i class="fas fa-project-diagram"></i>
                 <span>AISCR GLOBAL PMO</span>
             </a>
             <div class="top-nav-links">
-                <a href="../landing.html">Home</a>
-                <a href="../frontend/index.html">Dashboard</a>
-                <a href="../download.html">Downloads</a>
-                <a href="../landing.html" class="btn-nav">
-                    <i class="fas fa-home"></i> Home
-                </a>
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/download">Downloads</a>
             </div>
         </div>
     </nav>
     
-    <div class="container">
-        <a href="../landing.html" class="back-link">← Back to Home</a>
-        
-        <div class="header">
-            <h1>📄 AISCR GLOBAL PMO</h1>
-            <p>Word Document Templates</p>
+    <div class="coming-soon-container">
+        <div class="icon-wrapper">
+            <i class="fas fa-file-word"></i>
         </div>
         
-        <div class="info-box">
-            <p><strong>📦 Total Templates:</strong> 22 Word Documents</p>
-            <p><strong>💾 Format:</strong> Microsoft Word (.docx)</p>
-            <p><strong>🎨 Design:</strong> Professional templates with AISCR branding</p>
+        <h1>Word Templates</h1>
+        <div class="coming-soon-badge">
+            <i class="fas fa-clock"></i> Coming Soon
         </div>
         
-        <div class="templates-grid">
-            <div class="template-card">
-                <h3>01. Charter Template</h3>
-                <p>Project Charter document template</p>
-                <a href="01_Charter_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>02. Scope Template</h3>
-                <p>Project Scope definition template</p>
-                <a href="02_Scope_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>03. WBS Template</h3>
-                <p>Work Breakdown Structure template</p>
-                <a href="03_WBS_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>04. Risk Register Template</h3>
-                <p>Risk tracking and mitigation template</p>
-                <a href="04_Risk_Register_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>05. Stakeholders Template</h3>
-                <p>Stakeholder register template</p>
-                <a href="05_Stakeholders_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>06. Timeline Template</h3>
-                <p>Project timeline and scheduling template</p>
-                <a href="06_Timeline_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>07. Budget Template</h3>
-                <p>Budget management and tracking template</p>
-                <a href="07_Budget_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>08. Issues Template</h3>
-                <p>Issue tracking and resolution template</p>
-                <a href="08_Issues_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>09. Change Requests Template</h3>
-                <p>Change request form template</p>
-                <a href="09_Change_Requests_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>10. Lessons Learned Template</h3>
-                <p>Lessons learned documentation template</p>
-                <a href="10_Lessons_Learned_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>11. Volunteers Template</h3>
-                <p>Volunteer register template</p>
-                <a href="11_Volunteers_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>12. Assignments Template</h3>
-                <p>Volunteer assignment tracking template</p>
-                <a href="12_Assignments_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>13. Contributions Template</h3>
-                <p>Volunteer contributions tracking template</p>
-                <a href="13_Contributions_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>14. Portfolio Template</h3>
-                <p>Project portfolio management template</p>
-                <a href="14_Portfolio_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>15. Risk Heat Map Template</h3>
-                <p>Risk heat map visualization template</p>
-                <a href="15_Risk_Heat_Map_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>16. Gantt Chart Template</h3>
-                <p>Gantt chart and timeline template</p>
-                <a href="16_Gantt_Chart_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>17. Stage-Gate Calculator Template</h3>
-                <p>Stage-gate review template</p>
-                <a href="17_Stage_Gate_Calculator_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>18. Donor Dashboard Template</h3>
-                <p>Donor management template</p>
-                <a href="18_Donor_Dashboard_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>19. Membership Dashboard Template</h3>
-                <p>Membership tracking template</p>
-                <a href="19_Membership_Dashboard_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>20. Volunteer Scorecard Template</h3>
-                <p>Volunteer performance scoring template</p>
-                <a href="20_Volunteer_Scorecard_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>21. PMO KPIs Template</h3>
-                <p>Key Performance Indicators template</p>
-                <a href="21_PMO_KPIs_Template.docx" download class="download-btn">Download</a>
-            </div>
-            
-            <div class="template-card">
-                <h3>22. Dashboard Overview Template</h3>
-                <p>Dashboard structure and overview template</p>
-                <a href="22_Dashboard_Overview_Template.docx" download class="download-btn">Download</a>
+        <p class="message">
+            We're working hard to bring you a comprehensive template library with all 22 PMO document templates. 
+            This feature will allow you to download, customize, and use professional Word templates for all your project management needs.
+        </p>
+        
+        <div class="features-list">
+            <h3><i class="fas fa-list"></i> What's Coming</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>22 Word Templates</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-download"></i>
+                    <span>Easy Downloads</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-edit"></i>
+                    <span>Customizable</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-search"></i>
+                    <span>Search & Filter</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-preview"></i>
+                    <span>Preview Before Download</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-tags"></i>
+                    <span>Organized by Category</span>
+                </div>
             </div>
         </div>
         
-        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
-            <a href="../AISCR_PMO_Complete_System.zip" download class="download-btn" style="font-size: 1.1em; padding: 15px 30px; margin-right: 10px;">
-                📦 Download All Templates (ZIP)
+        <div class="actions">
+            <a href="/download" class="btn btn-primary">
+                <i class="fas fa-download"></i>
+                Download Excel System
             </a>
-            <a href="../landing.html" class="download-btn" style="font-size: 1.1em; padding: 15px 30px; background: #1F4E78;">
-                🏠 Go to Home
+            <a href="/dashboard" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
             </a>
         </div>
     </div>
 </body>
 </html>
-
