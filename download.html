@@ -6,6 +6,22 @@
     <title>AISCR GLOBAL PMO - Download Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="frontend/js/environment.js"></script>
+    <script>
+        // Block page load if in production (environment.js will handle the redirect)
+        // This script runs before page content loads
+        (function() {
+            const isProduction = window.location.hostname !== 'localhost' && 
+                                window.location.hostname !== '127.0.0.1' &&
+                                !window.location.hostname.startsWith('192.168.') &&
+                                !window.location.hostname.startsWith('10.') &&
+                                window.location.hostname !== '';
+            
+            if (isProduction) {
+                // Environment.js will handle the full block, but we can add immediate check here
+                console.log('%c🔒 Download page access will be blocked', 'color: #FF6B6B; font-size: 14px;');
+            }
+        })();
+    </script>
     <style>
         * {
             margin: 0;

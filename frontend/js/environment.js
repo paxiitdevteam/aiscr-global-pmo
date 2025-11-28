@@ -30,7 +30,7 @@
         config: DEMO_MODE
     };
     
-    // Block dashboard access in production
+    // Block dashboard and download page access in production
     if (DEMO_MODE.enabled && DEMO_MODE.blockDashboard) {
         // Check if we're on the dashboard page
         const isDashboard = window.location.pathname.includes('/dashboard') || 
@@ -40,10 +40,17 @@
                            document.getElementById('dashboard-page') !== null ||
                            document.querySelector('.sidebar') !== null;
         
-        if (isDashboard) {
+        // Check if we're on the download page
+        const isDownload = window.location.pathname.includes('/download') || 
+                          window.location.pathname.includes('download.html') ||
+                          document.querySelector('.download-section') !== null ||
+                          document.title.includes('Download');
+        
+        if (isDashboard || isDownload) {
             // Redirect to landing page immediately
-            console.log('%c🔒 DASHBOARD ACCESS BLOCKED', 'color: #FF6B6B; font-size: 16px; font-weight: bold;');
-            console.log('%cDashboard is not available in demo mode. Redirecting to landing page...', 'color: #666; font-size: 12px;');
+            const pageType = isDownload ? 'DOWNLOAD' : 'DASHBOARD';
+            console.log(`%c🔒 ${pageType} ACCESS BLOCKED`, 'color: #FF6B6B; font-size: 16px; font-weight: bold;');
+            console.log(`%c${pageType === 'DOWNLOAD' ? 'Download' : 'Dashboard'} page is not available in demo mode. Redirecting to landing page...`, 'color: #666; font-size: 12px;');
             
             // Show access denied message
             document.documentElement.innerHTML = `
@@ -122,8 +129,8 @@
     <div class="access-denied">
         <div class="icon">🔒</div>
         <h1>Access Restricted</h1>
-        <p>The dashboard is not available in the demonstration version for security reasons.</p>
-        <p class="info">Full dashboard functionality is available in the development environment.</p>
+        <p>${isDownload ? 'The download page' : 'The dashboard'} is not available in the demonstration version for security reasons.</p>
+        <p class="info">Full ${isDownload ? 'download' : 'dashboard'} functionality is available in the development environment.</p>
         <a href="/" class="btn-home">
             <i class="fas fa-home"></i> Return to Home
         </a>

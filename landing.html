@@ -487,7 +487,7 @@
             <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#stats">Statistics</a>
-                <a href="/download">Downloads</a>
+                <a href="/download" onclick="return blockDownloadAccess(event);">Downloads</a>
                 <a href="/dashboard" class="btn-nav" id="nav-dashboard-link" onclick="return blockDashboardAccess(event);">
                     <i class="fas fa-sign-in-alt"></i> Access Dashboard
                 </a>
@@ -504,7 +504,7 @@
                 <a href="/dashboard" class="btn-hero btn-primary-hero" id="hero-dashboard-link" onclick="return blockDashboardAccess(event);">
                     <i class="fas fa-rocket"></i> Launch Dashboard
                 </a>
-                <a href="/download" class="btn-hero btn-secondary-hero">
+                <a href="/download" class="btn-hero btn-secondary-hero" onclick="return blockDownloadAccess(event);">
                     <i class="fas fa-download"></i> Download Excel System
                 </a>
             </div>
@@ -647,7 +647,7 @@
         <div class="footer-content">
             <div class="footer-links">
                 <a href="/dashboard" onclick="return blockDashboardAccess(event);">Dashboard</a>
-                <a href="/download">Downloads</a>
+                <a href="/download" onclick="return blockDownloadAccess(event);">Downloads</a>
                 <a href="#features">Features</a>
                 <a href="/templates">Templates</a>
             </div>
