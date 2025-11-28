@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISCR GLOBAL PMO - Download Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="frontend/js/environment.js"></script>
     <style>
         * {
             margin: 0;
@@ -338,7 +339,7 @@
             </a>
             <div class="top-nav-links">
                 <a href="/">Home</a>
-                <a href="/dashboard">Dashboard</a>
+                <a href="/dashboard" onclick="return blockDashboardAccess(event);">Dashboard</a>
                 <a href="/templates">Templates</a>
                 <a href="/" class="btn-nav">
                     <i class="fas fa-home"></i> Home
@@ -357,7 +358,7 @@
             <a href="/" class="download-button" style="background: linear-gradient(135deg, #2EC4B6 0%, #1F4E78 100%); margin-bottom: 15px;">
                 🚀 Go to Landing Page
             </a>
-            <a href="/dashboard" class="download-button" style="background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%); margin-bottom: 15px;">
+            <a href="/dashboard" class="download-button" style="background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%); margin-bottom: 15px;" onclick="return blockDashboardAccess(event);">
                 🌐 Launch Dashboard
             </a>
             <a href="AISCR_PMO_Complete_System.zip" download class="download-button">
