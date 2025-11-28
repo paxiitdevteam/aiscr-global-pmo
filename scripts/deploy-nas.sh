@@ -114,6 +114,8 @@ mkdir -p "${DEPLOY_DIR}"
 if [ -d "frontend" ]; then
     mkdir -p "${DEPLOY_DIR}/frontend"
     cp -r frontend/* "${DEPLOY_DIR}/frontend/"
+    # Remove README.md from frontend if it exists
+    rm -f "${DEPLOY_DIR}/frontend/README.md"
     print_success "Frontend files copied"
 fi
 
@@ -129,10 +131,16 @@ if [ -f "download.html" ]; then
     print_success "Download page copied"
 fi
 
-# Copy .htaccess for clean URLs (Apache)
+# Copy .htaccess for clean URLs and security (Apache)
 if [ -f ".htaccess" ]; then
     cp ".htaccess" "${DEPLOY_DIR}/"
-    print_success ".htaccess copied (clean URLs)"
+    print_success ".htaccess copied (clean URLs + security)"
+fi
+
+# Copy robots.txt to prevent indexing of internal docs
+if [ -f "robots.txt" ]; then
+    cp "robots.txt" "${DEPLOY_DIR}/"
+    print_success "robots.txt copied (SEO protection)"
 fi
 
 # Create clean URL directories with redirects (works for both Apache and Nginx)

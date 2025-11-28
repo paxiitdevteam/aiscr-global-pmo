@@ -5,6 +5,28 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+    
+    # SECURITY: Block access to documentation and internal files
+    # Block all .md files (documentation)
+    RewriteRule ^.*\.md$ - [F,L]
+    
+    # Block access to documents folder
+    RewriteRule ^documents/ - [F,L]
+    
+    # Block access to deployment folder
+    RewriteRule ^deployment/ - [F,L]
+    
+    # Block access to scripts folder
+    RewriteRule ^scripts/ - [F,L]
+    
+    # Block access to Python files
+    RewriteRule ^.*\.py$ - [F,L]
+    
+    # Block access to requirements.txt and package.json
+    RewriteRule ^(requirements\.txt|package\.json|\.gitignore|\.gitattributes)$ - [F,L]
+    
+    # Block access to .git folder
+    RewriteRule ^\.git/ - [F,L]
 
     # Force HTTPS (if certificate is configured)
     # RewriteCond %{HTTPS} off

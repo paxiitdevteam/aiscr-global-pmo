@@ -1,0 +1,25 @@
+# AISCR Global PMO - Robots.txt
+# Prevent search engines from indexing internal documentation
+
+User-agent: *
+# Block all documentation files
+Disallow: /*.md
+Disallow: /documents/
+Disallow: /deployment/
+Disallow: /scripts/
+Disallow: /*.py
+Disallow: /requirements.txt
+Disallow: /package.json
+Disallow: /.git/
+
+# Allow public pages
+Allow: /
+Allow: /dashboard
+Allow: /download
+Allow: /templates
+Allow: /frontend/
+Allow: /Templates/
+
+# Sitemap (if you create one later)
+# Sitemap: https://pmo.paxiit.com/sitemap.xml
+
