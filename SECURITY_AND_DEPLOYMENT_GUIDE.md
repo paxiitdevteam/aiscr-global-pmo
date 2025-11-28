@@ -113,6 +113,8 @@ python -m http.server 8000
 bash scripts/deploy-nas.sh
 ```
 
+**Note:** This is the ONLY deployment tool. Do not use other deployment scripts.
+
 **What Gets Deployed:**
 - ✅ Frontend files (`frontend/`)
 - ✅ Landing page (`index.html`)

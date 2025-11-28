@@ -42,8 +42,12 @@ A comprehensive Project Management Office (PMO) system with automated Excel work
 │   └── assets/           # Static assets
 ├── documents/             # Documentation
 │   └── development/      # Development plans
+├── scripts/               # Deployment and utility scripts
+│   ├── deploy-nas.sh     # Production deployment (NAS)
+│   ├── start-server.sh   # Local development server
+│   └── setup.sh          # Initial setup
 ├── Templates/             # Word document templates
-├── create_pmo_system.py  # Excel generator
+├── create_pmo_system.py   # Excel generator
 ├── create_word_templates.py  # Word generator
 ├── create_zip.py         # Archive creator
 ├── landing.html          # Landing page
@@ -51,65 +55,53 @@ A comprehensive Project Management Office (PMO) system with automated Excel work
 └── README.md             # This file
 ```
 
-## 🛠️ Setup & Installation
+## 🛠️ Quick Start
 
 ### Prerequisites
 - Python 3.7+
-- Modern web browser (Chrome, Firefox, Safari, Edge)
+- Git Bash (for Windows)
+- Modern web browser
 
-### Local Development
+### Initial Setup (First Time)
+```bash
+bash scripts/setup.sh
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd "PMO AUTOMATED EXCEL SYSTEM"
-   ```
+### Start Local Development
+```bash
+bash scripts/start-server.sh
+```
 
-2. **Install Python dependencies**
-   ```bash
-   pip install openpyxl python-docx
-   ```
+**Access:**
+- Landing Page: `http://localhost:8000/`
+- Dashboard: `http://localhost:8000/dashboard`
 
-3. **Generate Excel and Word files**
-   ```bash
-   python create_pmo_system.py
-   python create_word_templates.py
-   python create_zip.py
-   ```
+### Build Artifacts
+```bash
+# Generate Excel and Word files
+python create_pmo_system.py
+python create_word_templates.py
+python create_zip.py
 
-4. **Start the web server**
-   ```bash
-   python -m http.server 8000
-   ```
-
-5. **Access the application**
-   - Landing Page: http://localhost:8000/landing.html
-   - Dashboard: http://localhost:8000/frontend/index.html
-   - Downloads: http://localhost:8000/download.html
+# Or use npm script
+npm run build
+```
 
 ## 🌐 Deployment
 
-### Option 1: Static Hosting (Recommended)
-The frontend is a static site and can be deployed to:
-- **Netlify** (Recommended - Easy CI/CD)
-- **Vercel** (Great for static sites)
-- **GitHub Pages** (Free hosting)
-- **AWS S3 + CloudFront**
-- **Azure Static Web Apps**
+### Production Deployment (NAS)
+```bash
+bash scripts/deploy-nas.sh
+```
 
-### Option 2: Traditional Web Server
-- Apache
-- Nginx
-- IIS
+**Deploys to:** `https://pmo.paxiit.com`
 
-## 🔄 CI/CD Pipeline
+**Note:** Dashboard and Download pages are blocked in production for security. See `SECURITY_AND_DEPLOYMENT_GUIDE.md` for details.
 
-The project includes GitHub Actions workflows for:
-- Automated testing
-- Build validation
-- Deployment to staging/production
-
-See `.github/workflows/` for CI/CD configuration.
+### CI/CD Pipeline
+- Automated validation and build
+- Manual approval for production deployment
+- See `.github/workflows/ci-cd.yml` for configuration
 
 ## 📝 Development
 
