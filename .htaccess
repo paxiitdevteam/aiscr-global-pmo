@@ -1,0 +1,60 @@
+# AISCR Global PMO - Apache URL Rewriting Rules
+# Clean URLs without file extensions and folder names
+
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Force HTTPS (if certificate is configured)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Remove trailing slashes (except for directories)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Remove .html extension
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([^.]+)$ $1.html [L]
+
+    # Dashboard route (clean URL)
+    RewriteRule ^dashboard/?$ /frontend/index.html [L]
+    RewriteRule ^dashboard/(.*)$ /frontend/$1 [L]
+
+    # Landing page (root)
+    RewriteRule ^$ /index.html [L]
+
+    # Download page
+    RewriteRule ^download/?$ /download.html [L]
+
+    # Frontend routes (hide frontend folder)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(?!frontend/)(.*)$ /frontend/$1 [L]
+
+    # Prevent direct access to frontend folder
+    RewriteCond %{THE_REQUEST} /frontend/ [NC]
+    RewriteRule ^frontend/(.*)$ /$1 [R=301,L]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Cache Control
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>
+

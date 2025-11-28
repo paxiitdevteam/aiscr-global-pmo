@@ -129,6 +129,12 @@ if [ -f "download.html" ]; then
     print_success "Download page copied"
 fi
 
+# Copy .htaccess for clean URLs (Apache)
+if [ -f ".htaccess" ]; then
+    cp ".htaccess" "${DEPLOY_DIR}/"
+    print_success ".htaccess copied (clean URLs)"
+fi
+
 # Copy Templates
 if [ -d "Templates" ]; then
     cp -r Templates "${DEPLOY_DIR}/"
@@ -170,9 +176,11 @@ print_success "✅ Deployment complete!"
 echo ""
 echo -e "${BLUE}📊 Deployment Information:${NC}"
 echo "  NAS Path: $DEPLOY_PATH"
-echo "  Access URL: http://pmo.paxiit.com/"
-echo "  Landing Page: http://pmo.paxiit.com/landing.html"
-echo "  Dashboard: http://pmo.paxiit.com/frontend/index.html"
+echo "  Main URL: http://pmo.paxiit.com/ (Landing Page)"
+echo "  Dashboard: http://pmo.paxiit.com/dashboard"
+echo "  Download: http://pmo.paxiit.com/download"
+echo ""
+print_info "📝 Note: Enable URL rewriting in Web Station for clean URLs"
 echo ""
 print_success "🎉 PMO Application is now live!"
 echo ""
