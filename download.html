@@ -458,6 +458,39 @@
             <p style="margin-top: 5px;">Professional Project Management Office System</p>
         </div>
     </div>
+    
+    <script>
+        // Block dashboard access in production
+        function blockDashboardAccess(event) {
+            if (window.ENV && window.ENV.demoMode) {
+                event.preventDefault();
+                event.stopPropagation();
+                alert('🔒 Access Restricted\n\nDashboard access is not available in the demonstration version for security reasons.\n\nFull dashboard functionality is available in the development environment.');
+                return false;
+            }
+            return true;
+        }
+        
+        // Block all dashboard links on page load (production only)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ENV && window.ENV.demoMode) {
+                const dashboardLinks = document.querySelectorAll('a[href*="/dashboard"], a[href*="dashboard"]');
+                dashboardLinks.forEach(link => {
+                    link.setAttribute('data-original-href', link.getAttribute('href'));
+                    link.setAttribute('href', '#');
+                    link.style.cursor = 'not-allowed';
+                    link.style.opacity = '0.7';
+                    link.title = 'Dashboard access restricted in demo mode';
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        alert('🔒 Access Restricted\n\nDashboard access is not available in the demonstration version for security reasons.');
+                        return false;
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
 
