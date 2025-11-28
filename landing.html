@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISCR GLOBAL PMO - Project Management Office System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="frontend/js/environment.js"></script>
     <style>
         * {
             margin: 0;
@@ -487,7 +488,7 @@
                 <a href="#features">Features</a>
                 <a href="#stats">Statistics</a>
                 <a href="/download">Downloads</a>
-                <a href="/dashboard" class="btn-nav">
+                <a href="/dashboard" class="btn-nav" id="nav-dashboard-link" onclick="return blockDashboardAccess(event);">
                     <i class="fas fa-sign-in-alt"></i> Access Dashboard
                 </a>
             </div>
@@ -500,7 +501,7 @@
             <h1>Project Management Office System</h1>
             <p>Streamline your projects, manage risks, track budgets, and coordinate volunteers with our comprehensive PMO platform</p>
             <div class="hero-buttons">
-                <a href="/dashboard" class="btn-hero btn-primary-hero">
+                <a href="/dashboard" class="btn-hero btn-primary-hero" id="hero-dashboard-link" onclick="return blockDashboardAccess(event);">
                     <i class="fas fa-rocket"></i> Launch Dashboard
                 </a>
                 <a href="/download" class="btn-hero btn-secondary-hero">
@@ -525,49 +526,49 @@
                     <h3>Project Portfolio</h3>
                     <p>Manage multiple projects with status tracking, priority levels, and comprehensive project details all in one place.</p>
                 </a>
-                <a href="/dashboard#risks" class="feature-card fade-in">
+                <a href="/dashboard#risks" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <h3>Risk Management</h3>
                     <p>Identify, assess, and mitigate risks with automated scoring, heat maps, and comprehensive risk registers.</p>
                 </a>
-                <a href="/dashboard#budget" class="feature-card fade-in">
+                <a href="/dashboard#budget" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-dollar-sign"></i>
                     </div>
                     <h3>Budget Tracking</h3>
                     <p>Monitor budgets with real-time variance calculations, cost tracking, and automated financial reporting.</p>
                 </a>
-                <a href="/dashboard#timeline" class="feature-card fade-in">
+                <a href="/dashboard#timeline" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
                     <h3>Timeline & Gantt</h3>
                     <p>Visualize project timelines with interactive Gantt charts, task dependencies, and milestone tracking.</p>
                 </a>
-                <a href="/dashboard#issues" class="feature-card fade-in">
+                <a href="/dashboard#issues" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-bug"></i>
                     </div>
                     <h3>Issue Tracking</h3>
                     <p>Track and resolve issues with priority management, due date alerts, and comprehensive issue registers.</p>
                 </a>
-                <a href="/dashboard#volunteers" class="feature-card fade-in">
+                <a href="/dashboard#volunteers" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
                     <h3>Volunteer Management</h3>
                     <p>Coordinate volunteers with skill tracking, assignment management, performance scoring, and contribution logs.</p>
                 </a>
-                <a href="/dashboard#stakeholders" class="feature-card fade-in">
+                <a href="/dashboard#stakeholders" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-handshake"></i>
                     </div>
                     <h3>Stakeholder Engagement</h3>
                     <p>Manage stakeholder relationships with influence-interest matrices and engagement strategies.</p>
                 </a>
-                <a href="/dashboard#monitoring" class="feature-card fade-in">
+                <a href="/dashboard#monitoring" class="feature-card fade-in" onclick="return blockDashboardAccess(event);">
                     <div class="feature-icon">
                         <i class="fas fa-tasks"></i>
                     </div>
@@ -635,7 +636,7 @@
         <div class="container">
             <h2>Ready to Transform Your PMO?</h2>
             <p>Start managing your projects more effectively today with our comprehensive PMO system</p>
-            <a href="/dashboard" class="btn-cta">
+            <a href="/dashboard" class="btn-cta" onclick="return blockDashboardAccess(event);">
                 <i class="fas fa-arrow-right"></i> Get Started Now
             </a>
         </div>
@@ -645,7 +646,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-links">
-                <a href="/dashboard">Dashboard</a>
+                <a href="/dashboard" onclick="return blockDashboardAccess(event);">Dashboard</a>
                 <a href="/download">Downloads</a>
                 <a href="#features">Features</a>
                 <a href="/templates">Templates</a>
