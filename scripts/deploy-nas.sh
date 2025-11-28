@@ -138,6 +138,7 @@ fi
 # Create clean URL directories with redirects (works for both Apache and Nginx)
 mkdir -p "${DEPLOY_DIR}/dashboard"
 mkdir -p "${DEPLOY_DIR}/download"
+mkdir -p "${DEPLOY_DIR}/templates"
 if [ -f "dashboard/index.html" ]; then
     cp "dashboard/index.html" "${DEPLOY_DIR}/dashboard/"
     print_success "Dashboard redirect created"
@@ -145,6 +146,10 @@ fi
 if [ -f "download/index.html" ]; then
     cp "download/index.html" "${DEPLOY_DIR}/download/"
     print_success "Download redirect created"
+fi
+if [ -f "templates/index.html" ]; then
+    cp "templates/index.html" "${DEPLOY_DIR}/templates/"
+    print_success "Templates coming soon page created"
 fi
 
 # Copy Templates
