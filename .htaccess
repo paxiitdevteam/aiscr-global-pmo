@@ -41,9 +41,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^([^.]+)$ $1.html [L]
 
-    # Dashboard route (clean URL)
-    RewriteRule ^dashboard/?$ /frontend/index.html [L]
-    RewriteRule ^dashboard/(.*)$ /frontend/$1 [L]
+    # Dashboard route (clean URL) - Blocked in production via JavaScript
+    RewriteRule ^dashboard/?$ /dashboard/index.html [L]
+    RewriteRule ^dashboard/(.*)$ /dashboard/$1 [L]
 
     # Landing page (root)
     RewriteRule ^$ /index.html [L]

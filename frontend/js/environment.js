@@ -18,7 +18,8 @@
         limitedFeatures: true,
         readOnly: true, // Disable create/edit/delete in demo mode
         maxItems: 5, // Limit number of items displayed
-        showWatermark: true
+        showWatermark: true,
+        blockDashboard: true // Block dashboard access completely
     };
     
     // Export to window
@@ -29,7 +30,128 @@
         config: DEMO_MODE
     };
     
-    // Show demo notice if in production
+    // Block dashboard access in production
+    if (DEMO_MODE.enabled && DEMO_MODE.blockDashboard) {
+        // Check if we're on the dashboard page
+        const isDashboard = window.location.pathname.includes('/dashboard') || 
+                           window.location.pathname.includes('frontend/index.html') ||
+                           window.location.pathname.includes('frontend/') ||
+                           document.querySelector('.dashboard-container') !== null ||
+                           document.getElementById('dashboard-page') !== null ||
+                           document.querySelector('.sidebar') !== null;
+        
+        if (isDashboard) {
+            // Redirect to landing page immediately
+            console.log('%c🔒 DASHBOARD ACCESS BLOCKED', 'color: #FF6B6B; font-size: 16px; font-weight: bold;');
+            console.log('%cDashboard is not available in demo mode. Redirecting to landing page...', 'color: #666; font-size: 12px;');
+            
+            // Show access denied message
+            document.documentElement.innerHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Restricted - AISCR PMO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .access-denied {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #FF6B6B;
+        }
+        h1 {
+            color: #1F4E78;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .info {
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .btn-home {
+            display: inline-block;
+            background: #1F4E78;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        .btn-home:hover {
+            background: #2EC4B6;
+        }
+        .countdown {
+            color: #999;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="access-denied">
+        <div class="icon">🔒</div>
+        <h1>Access Restricted</h1>
+        <p>The dashboard is not available in the demonstration version for security reasons.</p>
+        <p class="info">Full dashboard functionality is available in the development environment.</p>
+        <a href="/" class="btn-home">
+            <i class="fas fa-home"></i> Return to Home
+        </a>
+        <p class="countdown">Redirecting automatically in <span id="countdown">5</span> seconds...</p>
+    </div>
+    <script>
+        let countdown = 5;
+        const countdownEl = document.getElementById('countdown');
+        const redirectInterval = setInterval(() => {
+            countdown--;
+            if (countdownEl) countdownEl.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(redirectInterval);
+                window.location.href = '/';
+            }
+        }, 1000);
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 5000);
+    </script>
+</body>
+</html>`;
+            
+            return; // Stop execution
+        }
+    }
+    
+    // For other pages, show demo banner
     if (DEMO_MODE.enabled) {
         console.log('%c🔒 DEMO MODE ACTIVE', 'color: #FF6B6B; font-size: 16px; font-weight: bold;');
         console.log('%cThis is a demonstration version. Full features are disabled for security.', 'color: #666; font-size: 12px;');
@@ -66,7 +188,10 @@
         document.body.insertBefore(demoBanner, document.body.firstChild);
         
         // Adjust body padding to account for banner
-        document.body.style.paddingTop = '50px';
+        if (document.querySelector('.main-content')) {
+            document.querySelector('.main-content').style.paddingTop = '50px';
+        } else {
+            document.body.style.paddingTop = '50px';
+        }
     }
 })();
-
