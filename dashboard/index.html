@@ -2,15 +2,903 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=/frontend/index.html">
-    <script>
-        // Immediate redirect to dashboard
-        window.location.href = '/frontend/index.html';
-    </script>
-    <title>Redirecting to Dashboard...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AISCR GLOBAL PMO - Dashboard</title>
+    <link rel="stylesheet" href="../frontend/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <p>Redirecting to dashboard... <a href="/frontend/index.html">Click here if not redirected</a></p>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;">
+                <h2 style="margin: 0;"><i class="fas fa-project-diagram"></i> AISCR PMO</h2>
+            </a>
+            <button class="toggle-sidebar" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-home"></i> <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="portfolio">
+                <i class="fas fa-briefcase"></i> <span>Portfolio</span>
+            </a>
+            <a href="#" class="nav-item" data-page="risks">
+                <i class="fas fa-exclamation-triangle"></i> <span>Risks</span>
+            </a>
+            <a href="#" class="nav-item" data-page="heatmap">
+                <i class="fas fa-fire"></i> <span>Risk Heat Map</span>
+            </a>
+            <a href="#" class="nav-item" data-page="budget">
+                <i class="fas fa-dollar-sign"></i> <span>Budget</span>
+            </a>
+            <a href="#" class="nav-item" data-page="timeline">
+                <i class="fas fa-calendar-alt"></i> <span>Timeline</span>
+            </a>
+            <a href="#" class="nav-item" data-page="issues">
+                <i class="fas fa-bug"></i> <span>Issues</span>
+            </a>
+            <a href="#" class="nav-item" data-page="volunteers">
+                <i class="fas fa-users"></i> <span>Volunteers</span>
+            </a>
+            <a href="#" class="nav-item" data-page="stakeholders">
+                <i class="fas fa-handshake"></i> <span>Stakeholders</span>
+            </a>
+            <a href="#" class="nav-item" data-page="monitoring">
+                <i class="fas fa-tasks"></i> <span>Project Monitoring</span>
+            </a>
+            <a href="#" class="nav-item" data-page="reports">
+                <i class="fas fa-chart-bar"></i> <span>Reports</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/download" class="download-link" target="_blank">
+                <i class="fas fa-download"></i> <span>Download Excel</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <a href="/" style="text-decoration: none; color: #1F4E78; display: flex; align-items: center; gap: 10px; margin-right: 20px;">
+                    <i class="fas fa-home" style="font-size: 1.2em;"></i>
+                </a>
+                <div>
+                    <h1 id="pageTitle" style="margin: 0;">Dashboard</h1>
+                    <div id="currentDate" style="font-size: 0.85em; color: #666; font-weight: normal;"></div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div id="currencySelectorContainer"></div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="notifications" id="notificationBtn" onclick="toggleNotificationPanel()">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">0</span>
+                    <div class="notification-panel" id="notificationPanel">
+                        <div class="notification-panel-header">
+                            <h3>Notifications</h3>
+                            <button class="clear-all-btn" onclick="clearAllNotifications()">
+                                <i class="fas fa-trash"></i> Clear All
+                            </button>
+                        </div>
+                        <div class="notification-list" id="notificationList">
+                            <div class="no-notifications">
+                                <i class="fas fa-bell-slash"></i>
+                                <p>No new notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tools-menu">
+                    <button class="tools-btn" onclick="toggleToolsMenu()" title="Tools & Actions">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="tools-dropdown" id="toolsDropdown">
+                        <a href="/download" target="_blank" class="tools-item">
+                            <i class="fas fa-download"></i>
+                            <span>Download Excel</span>
+                        </a>
+                        <button class="tools-item" onclick="showResetOptions(); toggleToolsMenu();">
+                            <i class="fas fa-redo-alt"></i>
+                            <span>Reset Data</span>
+                        </button>
+                        <div class="tools-divider"></div>
+                        <a href="/" class="tools-item">
+                            <i class="fas fa-home"></i>
+                            <span>Landing Page</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=PMO+User&background=1F4E78&color=fff" alt="User">
+                    <span>PMO Manager</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content" id="pageContent">
+            <!-- Dashboard Page -->
+            <div class="page" id="dashboard-page">
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #1F4E78;">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>Total Projects</h3>
+                            <p class="kpi-value" id="totalProjects">12</p>
+                            <span class="kpi-change positive">+2 this month</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #00FF00;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>Active (Green)</h3>
+                            <p class="kpi-value" id="activeProjects">8</p>
+                            <span class="kpi-change">On track</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #FFFF00;">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>At Risk (Yellow)</h3>
+                            <p class="kpi-value" id="atRiskProjects">3</p>
+                            <span class="kpi-change warning">Needs attention</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #FF0000;">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>Critical (Red)</h3>
+                            <p class="kpi-value" id="criticalProjects">1</p>
+                            <span class="kpi-change negative">Urgent action</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #2EC4B6;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>Total Funding</h3>
+                            <p class="kpi-value" id="totalFunding">$140,000</p>
+                            <span class="kpi-change positive" id="fundingChange">+$20K this quarter</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #2EC4B6;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>Membership Growth</h3>
+                            <p class="kpi-value" id="membershipGrowth">25%</p>
+                            <span class="kpi-change positive">+5% this month</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background: #2EC4B6;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3>Avg Volunteer Score</h3>
+                            <p class="kpi-value" id="avgVolunteerScore">85.5</p>
+                            <span class="kpi-change positive">Excellent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Portfolio Status</h3>
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Donor Funding</h3>
+                        <canvas id="donorChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Membership Growth</h3>
+                        <canvas id="membershipChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Risk Heat Map Summary</h3>
+                        <div class="risk-summary">
+                            <div class="risk-item">
+                                <span class="risk-label">Low Risk (≤5):</span>
+                                <span class="risk-value" style="color: #00FF00;">15</span>
+                            </div>
+                            <div class="risk-item">
+                                <span class="risk-label">Medium Risk (6-10):</span>
+                                <span class="risk-value" style="color: #FFFF00;">8</span>
+                            </div>
+                            <div class="risk-item">
+                                <span class="risk-label">High Risk (>10):</span>
+                                <span class="risk-value" style="color: #FF0000;">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-card">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <i class="fas fa-check-circle" style="color: #00FF00;"></i>
+                            <div class="activity-content">
+                                <p><strong>Project "PMO System"</strong> status changed to Green</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-exclamation-triangle" style="color: #FFFF00;"></i>
+                            <div class="activity-content">
+                                <p><strong>New risk</strong> identified in "Data Analysis" project</p>
+                                <span class="activity-time">5 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-user-plus" style="color: #2EC4B6;"></i>
+                            <div class="activity-content">
+                                <p><strong>New volunteer</strong> assigned to "IT Infrastructure"</p>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Page -->
+            <div class="page" id="portfolio-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Project Portfolio</h2>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div class="export-dropdown">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Export
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div class="export-menu">
+                                <a onclick="exportPortfolioReport('pdf')"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <a onclick="exportPortfolioReport('word')"><i class="fas fa-file-word"></i> Word</a>
+                                <a onclick="exportPortfolioReport('excel')"><i class="fas fa-file-excel"></i> Excel</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="openProjectProposal()">
+                            <i class="fas fa-lightbulb"></i> Propose Project
+                        </button>
+                        <button class="btn btn-primary" onclick="modalManager.openModal('portfolio', 'create')">
+                            <i class="fas fa-plus"></i> New Project
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Filter Tabs (CCPS-inspired) -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all" onclick="filterProjects('all')">
+                        <i class="fas fa-list"></i> All Projects
+                    </button>
+                    <button class="filter-tab" data-filter="accepting-volunteers" onclick="filterProjects('accepting-volunteers')">
+                        <i class="fas fa-user-plus"></i> Accepting Volunteers
+                    </button>
+                    <button class="filter-tab" data-filter="active" onclick="filterProjects('active')">
+                        <i class="fas fa-play-circle"></i> Active
+                    </button>
+                    <button class="filter-tab" data-filter="at-risk" onclick="filterProjects('at-risk')">
+                        <i class="fas fa-exclamation-triangle"></i> At Risk
+                    </button>
+                    <button class="filter-tab" data-filter="completed" onclick="filterProjects('completed')">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </button>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="portfolio-search">
+                    <div class="search-box" style="width: 100%; max-width: 500px;">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="projectSearch" placeholder="Search projects by name, PM, or category..." onkeyup="searchProjects()">
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>PM</th>
+                                <th>Priority</th>
+                                <th>Volunteers</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="portfolioTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Risks Page -->
+            <div class="page" id="risks-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Risk Register</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="export-dropdown">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Export
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div class="export-menu">
+                                <a onclick="exportRiskReport('pdf')"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <a onclick="exportRiskReport('word')"><i class="fas fa-file-word"></i> Word</a>
+                                <a onclick="exportRiskReport('excel')"><i class="fas fa-file-excel"></i> Excel</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="modalManager.openModal('risks', 'create')">
+                            <i class="fas fa-plus"></i> New Risk
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Risk ID</th>
+                                <th>Description</th>
+                                <th>Probability</th>
+                                <th>Impact</th>
+                                <th>Score</th>
+                                <th>Owner</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="risksTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Risk Heat Map Page -->
+            <div class="page" id="heatmap-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Risk Heat Map</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="export-dropdown">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Export
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div class="export-menu">
+                                <a onclick="exportHeatMap('pdf')"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <a onclick="exportHeatMap('image')"><i class="fas fa-image"></i> Image</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="initializeHeatMap()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="heatmap-container">
+                    <div class="heatmap-info">
+                        <div class="info-card">
+                            <h3><i class="fas fa-info-circle"></i> How to Read the Heat Map</h3>
+                            <ul>
+                                <li><strong>X-Axis (Probability):</strong> Likelihood of risk occurring (1 = Very Low, 5 = Very High)</li>
+                                <li><strong>Y-Axis (Impact):</strong> Severity if risk occurs (1 = Very Low, 5 = Very High)</li>
+                                <li><strong>Colors:</strong> Green = Low Risk, Yellow = Medium Risk, Orange = Medium-High, Red = High Risk</li>
+                                <li><strong>Circles:</strong> Each risk is plotted. Click to view details.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="risk-summary">
+                            <h3><i class="fas fa-chart-bar"></i> Risk Summary</h3>
+                            <div id="riskSummaryStats">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="heatmap-visualization">
+                        <canvas id="heatmapCanvas" width="600" height="600"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Page -->
+            <div class="page" id="budget-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Budget Management</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="export-dropdown">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Export
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div class="export-menu">
+                                <a onclick="exportBudgetReport('pdf')"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <a onclick="exportBudgetReport('word')"><i class="fas fa-file-word"></i> Word</a>
+                                <a onclick="exportBudgetReport('excel')"><i class="fas fa-file-excel"></i> Excel</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="modalManager.openModal('budget', 'create')">
+                            <i class="fas fa-plus"></i> New Budget Item
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Estimated Cost</th>
+                                <th>Actual Cost</th>
+                                <th>Variance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="budgetTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Timeline Page -->
+            <div class="page" id="timeline-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Project Timeline</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Task
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timelineTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Issues Page -->
+            <div class="page" id="issues-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Issues Register</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Issue
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Issue ID</th>
+                                <th>Description</th>
+                                <th>Impact</th>
+                                <th>Owner</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="issuesTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Volunteers Page -->
+            <div class="page" id="volunteers-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Volunteer Management</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="export-dropdown">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Export
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div class="export-menu">
+                                <a onclick="exportVolunteerReport('pdf')"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <a onclick="exportVolunteerReport('word')"><i class="fas fa-file-word"></i> Word</a>
+                                <a onclick="exportVolunteerReport('excel')"><i class="fas fa-file-excel"></i> Excel</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="modalManager.openModal('volunteers', 'create')">
+                            <i class="fas fa-plus"></i> New Volunteer
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Volunteer</th>
+                                <th>Skill</th>
+                                <th>Level</th>
+                                <th>Availability</th>
+                                <th>Performance Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="volunteersTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stakeholders Page -->
+            <div class="page" id="stakeholders-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Stakeholder Register</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Stakeholder
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Stakeholder</th>
+                                <th>Role</th>
+                                <th>Influence</th>
+                                <th>Interest</th>
+                                <th>Engagement Strategy</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stakeholdersTableBody">
+                            <!-- Data will be loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Project Monitoring Page -->
+            <div class="page" id="monitoring-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Project Monitoring</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Monitor
+                    </button>
+                </div>
+                
+                <!-- Monitoring Dashboard -->
+                <div class="monitoring-grid">
+                    <div class="monitor-card">
+                        <div class="monitor-header">
+                            <h3>PMO System</h3>
+                            <span class="status-badge status-green">On Track</span>
+                        </div>
+                        <div class="monitor-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%; background: #00FF00;"></div>
+                            </div>
+                            <span class="progress-text">75% Complete</span>
+                        </div>
+                        <div class="monitor-details" id="monitor-details-0">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span class="monitor-due-date">Due: Loading...</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>PM: John Doe</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Risks: 2</span>
+                            </div>
+                        </div>
+                        <div class="monitor-actions">
+                            <button class="btn btn-secondary" onclick="window.location.href='#portfolio'">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-card">
+                        <div class="monitor-header">
+                            <h3>Data Analysis</h3>
+                            <span class="status-badge status-yellow">At Risk</span>
+                        </div>
+                        <div class="monitor-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%; background: #FFFF00;"></div>
+                            </div>
+                            <span class="progress-text">45% Complete</span>
+                        </div>
+                        <div class="monitor-details" id="monitor-details-1">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span class="monitor-due-date">Due: Loading...</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>PM: Jane Smith</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Risks: 3</span>
+                            </div>
+                        </div>
+                        <div class="monitor-actions">
+                            <button class="btn btn-secondary" onclick="window.location.href='#portfolio'">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-card">
+                        <div class="monitor-header">
+                            <h3>IT Infrastructure</h3>
+                            <span class="status-badge status-green">On Track</span>
+                        </div>
+                        <div class="monitor-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%; background: #00FF00;"></div>
+                            </div>
+                            <span class="progress-text">90% Complete</span>
+                        </div>
+                        <div class="monitor-details" id="monitor-details-2">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span class="monitor-due-date">Due: Loading...</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>PM: Bob Johnson</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Risks: 1</span>
+                            </div>
+                        </div>
+                        <div class="monitor-actions">
+                            <button class="btn btn-secondary" onclick="window.location.href='#portfolio'">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-card">
+                        <div class="monitor-header">
+                            <h3>Marketing Campaign</h3>
+                            <span class="status-badge status-red">Critical</span>
+                        </div>
+                        <div class="monitor-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%; background: #FF0000;"></div>
+                            </div>
+                            <span class="progress-text">30% Complete</span>
+                        </div>
+                        <div class="monitor-details" id="monitor-details-3">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span class="monitor-due-date">Due: Loading...</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>PM: Alice Brown</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Risks: 5</span>
+                            </div>
+                        </div>
+                        <div class="monitor-actions">
+                            <button class="btn btn-secondary" onclick="window.location.href='#portfolio'">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Monitoring Summary -->
+                <div class="monitoring-summary">
+                    <div class="summary-card">
+                        <h3>Overall Progress</h3>
+                        <div class="summary-progress">
+                            <div class="progress-bar large">
+                                <div class="progress-fill" style="width: 60%; background: linear-gradient(90deg, #00FF00, #FFFF00);"></div>
+                            </div>
+                            <span class="summary-text">60% Average Completion</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Active Projects</h3>
+                        <p class="summary-number">12</p>
+                        <p class="summary-label">Projects in Progress</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Milestones</h3>
+                        <p class="summary-number">8/15</p>
+                        <p class="summary-label">Milestones Achieved</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Team Performance</h3>
+                        <p class="summary-number">85%</p>
+                        <p class="summary-label">On-Time Delivery Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page" id="reports-page" style="display: none;">
+                <div class="page-header">
+                    <h2>Reports & Analytics</h2>
+                </div>
+                
+                <!-- Data Analytics Tools Section -->
+                <div class="analytics-section">
+                    <h3 style="color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-chart-line"></i> Advanced Data Analytics
+                    </h3>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="analytics-icon" style="background: linear-gradient(135deg, #F2C811, #F28F16);">
+                                <i class="fab fa-microsoft"></i>
+                            </div>
+                            <h3>Power BI Integration</h3>
+                            <p>Interactive dashboards and advanced analytics with Microsoft Power BI</p>
+                            <div class="analytics-actions">
+                                <button class="btn btn-primary" onclick="openPowerBI()">
+                                    <i class="fas fa-external-link-alt"></i> Open Power BI
+                                </button>
+                                <button class="btn btn-secondary" onclick="embedPowerBI()">
+                                    <i class="fas fa-code"></i> Embed Dashboard
+                                </button>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-icon" style="background: linear-gradient(135deg, #E97627, #C63D2D);">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h3>Tableau Integration</h3>
+                            <p>Visual analytics and data visualization with Tableau</p>
+                            <div class="analytics-actions">
+                                <button class="btn btn-primary" onclick="openTableau()">
+                                    <i class="fas fa-external-link-alt"></i> Open Tableau
+                                </button>
+                                <button class="btn btn-secondary" onclick="embedTableau()">
+                                    <i class="fas fa-code"></i> Embed Dashboard
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Export Reports Section -->
+                <div class="export-section">
+                    <h3 style="color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-download"></i> Export Reports
+                    </h3>
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <i class="fas fa-briefcase"></i>
+                            <h3>Portfolio Status Report</h3>
+                            <p>Complete overview of all projects</p>
+                            <div class="export-buttons">
+                                <button class="btn-export pdf" onclick="exportPortfolioReport('pdf')" title="Export to PDF">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn-export word" onclick="exportPortfolioReport('word')" title="Export to Word">
+                                    <i class="fas fa-file-word"></i> Word
+                                </button>
+                                <button class="btn-export excel" onclick="exportPortfolioReport('excel')" title="Export to Excel">
+                                    <i class="fas fa-file-excel"></i> Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Risk Register Report</h3>
+                            <p>Detailed risk analysis and mitigation</p>
+                            <div class="export-buttons">
+                                <button class="btn-export pdf" onclick="exportRiskReport('pdf')" title="Export to PDF">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn-export word" onclick="exportRiskReport('word')" title="Export to Word">
+                                    <i class="fas fa-file-word"></i> Word
+                                </button>
+                                <button class="btn-export excel" onclick="exportRiskReport('excel')" title="Export to Excel">
+                                    <i class="fas fa-file-excel"></i> Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>Budget Variance Report</h3>
+                            <p>Financial analysis and forecasting</p>
+                            <div class="export-buttons">
+                                <button class="btn-export pdf" onclick="exportBudgetReport('pdf')" title="Export to PDF">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn-export word" onclick="exportBudgetReport('word')" title="Export to Word">
+                                    <i class="fas fa-file-word"></i> Word
+                                </button>
+                                <button class="btn-export excel" onclick="exportBudgetReport('excel')" title="Export to Excel">
+                                    <i class="fas fa-file-excel"></i> Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Volunteer Performance Report</h3>
+                            <p>Performance metrics and scores</p>
+                            <div class="export-buttons">
+                                <button class="btn-export pdf" onclick="exportVolunteerReport('pdf')" title="Export to PDF">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn-export word" onclick="exportVolunteerReport('word')" title="Export to Word">
+                                    <i class="fas fa-file-word"></i> Word
+                                </button>
+                                <button class="btn-export excel" onclick="exportVolunteerReport('excel')" title="Export to Excel">
+                                    <i class="fas fa-file-excel"></i> Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <i class="fas fa-chart-pie"></i>
+                            <h3>Dashboard Summary</h3>
+                            <p>Complete PMO dashboard overview</p>
+                            <div class="export-buttons">
+                                <button class="btn-export pdf" onclick="exportDashboardSummary('pdf')" title="Export to PDF">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn-export word" onclick="exportDashboardSummary('word')" title="Export to Word">
+                                    <i class="fas fa-file-word"></i> Word
+                                </button>
+                                <button class="btn-export excel" onclick="exportDashboardSummary('excel')" title="Export to Excel">
+                                    <i class="fas fa-file-excel"></i> Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../frontend/js/currency.js"></script>
+    <script src="../frontend/js/modals.js"></script>
+    <script src="../frontend/js/export.js"></script>
+    <script src="../frontend/js/notifications.js"></script>
+    <script src="../frontend/js/reset.js"></script>
+    <script src="../frontend/js/tools.js"></script>
+    <script src="../frontend/js/heatmap.js"></script>
+    <script src="../frontend/js/app.js"></script>
+    <script src="../frontend/js/charts.js"></script>
 </body>
 </html>
 
