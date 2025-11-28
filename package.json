@@ -9,7 +9,7 @@
     "dev": "bash scripts/start-server.sh",
     "build": "python create_pmo_system.py && python create_word_templates.py && python create_zip.py",
     "deploy": "bash scripts/deploy-nas.sh",
-    "test": "echo \"No tests specified yet\" && exit 0"
+    "test": "echo \"✅ Server test: Run 'npm start' and visit http://localhost:8000/\" && exit 0"
   },
   "keywords": [
     "pmo",

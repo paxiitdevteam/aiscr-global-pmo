@@ -21,6 +21,11 @@ The application automatically detects whether it's running in **production** or 
 
 **File:** `frontend/js/environment.js`
 
+**How It Works:**
+- Automatic detection on page load
+- No manual configuration needed
+- Works for all pages (landing, dashboard, download)
+
 ---
 
 ### **2. Blocked Pages in Production**
