@@ -129,8 +129,8 @@
     <div class="access-denied">
         <div class="icon">🔒</div>
         <h1>Access Restricted</h1>
-        <p>${isDownload ? 'The download page' : 'The dashboard'} is not available in the demonstration version for security reasons.</p>
-        <p class="info">Full ${isDownload ? 'download' : 'dashboard'} functionality is available in the development environment.</p>
+        <p>` + (isDownload ? 'The download page' : 'The dashboard') + ` is not available in the demonstration version for security reasons.</p>
+        <p class="info">Full ` + (isDownload ? 'download' : 'dashboard') + ` functionality is available in the development environment.</p>
         <a href="/" class="btn-home">
             <i class="fas fa-home"></i> Return to Home
         </a>
