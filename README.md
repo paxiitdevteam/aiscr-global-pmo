@@ -73,8 +73,9 @@ bash scripts/start-server.sh
 ```
 
 **Access:**
-- Landing Page: `http://localhost:8000/`
+- Landing Page: `http://localhost:8000/` (root - serves index.html)
 - Dashboard: `http://localhost:8000/dashboard`
+- Downloads: `http://localhost:8000/download`
 
 ### Build Artifacts
 ```bash
