@@ -85,6 +85,24 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCurrentDate();
     setDefaultDates();
     
+    // Load PMO Framework data when page is shown
+    const pmoFrameworkPage = document.getElementById('pmo-framework-page');
+    if (pmoFrameworkPage) {
+        // Load when PMO Framework page is accessed
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    if (pmoFrameworkPage.style.display !== 'none') {
+                        if (typeof loadPMOFrameworkData === 'function') {
+                            loadPMOFrameworkData();
+                        }
+                    }
+                }
+            });
+        });
+        observer.observe(pmoFrameworkPage, { attributes: true });
+    }
+    
     // Update date display every minute
     setInterval(updateCurrentDate, 60000);
     
@@ -114,9 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (hashNavItem) {
                     hashNavItem.classList.add('active');
                     const pageTitle = document.getElementById('pageTitle');
-                    const titles = {
-                        'dashboard': 'Dashboard',
-                        'portfolio': 'Project Portfolio',
+                const titles = {
+                    'pmo-framework': 'PMO Framework & Standards',
+                    'project-intake': 'Project Intake',
+                    'intake-register': 'Intake Register',
+                    'dashboard': 'Dashboard',
+                    'portfolio': 'Project Portfolio',
                         'risks': 'Risk Register',
                         'budget': 'Budget Management',
                         'timeline': 'Project Timeline',
@@ -199,6 +220,27 @@ function initializeNavigation() {
                 if (targetPage === 'heatmap') {
                     loadHeatMapData();
                 }
+                
+                // Load PMO Framework data if framework page
+                if (targetPage === 'pmo-framework') {
+                    if (typeof loadPMOFrameworkData === 'function') {
+                        loadPMOFrameworkData();
+                    }
+                }
+                
+                // Load Intake Register if intake register page
+                if (targetPage === 'intake-register') {
+                    if (typeof loadIntakeRegister === 'function') {
+                        loadIntakeRegister();
+                    }
+                }
+                
+                // Initialize Intake System if intake page
+                if (targetPage === 'project-intake') {
+                    if (typeof initIntakeSystem === 'function') {
+                        initIntakeSystem();
+                    }
+                }
             }
             
             // Clear hash after navigation
@@ -209,6 +251,9 @@ function initializeNavigation() {
             // Update page title
             if (pageTitle) {
                 const titles = {
+                    'pmo-framework': 'PMO Framework & Standards',
+                    'project-intake': 'Project Intake',
+                    'intake-register': 'Intake Register',
                     'dashboard': 'Dashboard',
                     'portfolio': 'Project Portfolio',
                     'risks': 'Risk Register',

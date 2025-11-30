@@ -45,7 +45,7 @@
 1. **Complete NAS Organization:**
    ```bash
    # Run full organization (includes PMO)
-   bash scripts/organize-nas.sh
+   (Script removed - one-time use completed)
    ```
 
 2. **Or Just Organize PMO:**

@@ -116,6 +116,13 @@ if [ -d "frontend" ]; then
     cp -r frontend/* "${DEPLOY_DIR}/frontend/"
     # Remove README.md from frontend if it exists
     rm -f "${DEPLOY_DIR}/frontend/README.md"
+    # Ensure analytics files are included
+    if [ -f "frontend/js/analytics.js" ]; then
+        print_success "Analytics tracking script included"
+    fi
+    if [ -f "frontend/js/analytics-storage.js" ]; then
+        print_success "Analytics storage script included"
+    fi
     print_success "Frontend files copied"
 fi
 
@@ -131,6 +138,12 @@ if [ -f "download.html" ]; then
     print_success "Download page copied"
 fi
 
+# Copy analytics dashboard (password-protected admin dashboard)
+if [ -f "analytics-live-dashboard.html" ]; then
+    cp "analytics-live-dashboard.html" "${DEPLOY_DIR}/"
+    print_success "Analytics admin dashboard copied"
+fi
+
 # Copy .htaccess for clean URLs and security (Apache)
 if [ -f ".htaccess" ]; then
     cp ".htaccess" "${DEPLOY_DIR}/"
@@ -144,17 +157,8 @@ if [ -f "robots.txt" ]; then
 fi
 
 # Create clean URL directories with redirects (works for both Apache and Nginx)
-mkdir -p "${DEPLOY_DIR}/dashboard"
-mkdir -p "${DEPLOY_DIR}/download"
+# Note: dashboard/ and download/ redirects are handled by .htaccess and nginx configs
 mkdir -p "${DEPLOY_DIR}/templates"
-if [ -f "dashboard/index.html" ]; then
-    cp "dashboard/index.html" "${DEPLOY_DIR}/dashboard/"
-    print_success "Dashboard redirect created"
-fi
-if [ -f "download/index.html" ]; then
-    cp "download/index.html" "${DEPLOY_DIR}/download/"
-    print_success "Download redirect created"
-fi
 if [ -f "templates/index.html" ]; then
     cp "templates/index.html" "${DEPLOY_DIR}/templates/"
     print_success "Templates coming soon page created"
@@ -204,8 +208,10 @@ echo "  NAS Path: $DEPLOY_PATH"
 echo "  Main URL: http://pmo.paxiit.com/ (Landing Page)"
 echo "  Dashboard: http://pmo.paxiit.com/dashboard"
 echo "  Download: http://pmo.paxiit.com/download"
+echo "  Analytics Dashboard: http://pmo.paxiit.com/analytics-live-dashboard.html (Admin Only)"
 echo ""
 print_info "📝 Note: Enable URL rewriting in Web Station for clean URLs"
+print_info "🔒 Analytics Dashboard: Password protected - Admin access only"
 echo ""
 print_success "🎉 PMO Application is now live!"
 echo ""

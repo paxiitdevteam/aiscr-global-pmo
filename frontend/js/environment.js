@@ -52,6 +52,11 @@
             console.log(`%c🔒 ${pageType} ACCESS BLOCKED`, 'color: #FF6B6B; font-size: 16px; font-weight: bold;');
             console.log(`%c${pageType === 'DOWNLOAD' ? 'Download' : 'Dashboard'} page is not available in demo mode. Redirecting to landing page...`, 'color: #666; font-size: 12px;');
             
+            // Track blocked access attempt (shows visitor interest!)
+            if (typeof trackBlockedAccess === 'function') {
+                trackBlockedAccess(pageType === 'DOWNLOAD' ? 'Download Page' : 'Dashboard', 'demo_mode_restriction');
+            }
+            
             // Show access denied message
             document.documentElement.innerHTML = `
 <!DOCTYPE html>

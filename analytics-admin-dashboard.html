@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Admin Dashboard - AISCR PMO</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231F4E78'/%3E%3Cpath d='M30 30 L50 20 L70 30 L70 50 L50 60 L30 50 Z' fill='%232EC4B6'/%3E%3Cpath d='M40 40 L50 35 L60 40 L60 50 L50 55 L40 50 Z' fill='white'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%);
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-box h1 {
+            color: #1F4E78;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .login-box p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #2EC4B6;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #1F4E78;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-login:hover {
+            background: #2EC4B6;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        /* Dashboard Content (hidden until login) */
+        .dashboard-content {
+            display: none;
+        }
+        .header {
+            background: linear-gradient(135deg, #1F4E78 0%, #2EC4B6 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #2EC4B6;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        .stat-card.high-interest {
+            border-left-color: #ff6b6b;
+        }
+        .stat-card.engagement {
+            border-left-color: #4ec9b0;
+        }
+        .stat-card.warning {
+            border-left-color: #ffc107;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1F4E78;
+        }
+        .stat-change {
+            font-size: 0.85em;
+            color: #28a745;
+            margin-top: 5px;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #1F4E78;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .filter-tab.active {
+            border-color: #2EC4B6;
+            background: #2EC4B6;
+            color: white;
+        }
+        .event-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .event-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        .event-item:hover {
+            background: #f8f9fa;
+        }
+        .event-info {
+            flex: 1;
+        }
+        .event-name {
+            font-weight: 600;
+            color: #1F4E78;
+            margin-bottom: 5px;
+        }
+        .event-details {
+            color: #666;
+            font-size: 0.85em;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .event-meta {
+            text-align: right;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .badge-high-interest {
+            background: #ff6b6b;
+            color: white;
+        }
+        .badge-engagement {
+            background: #4ec9b0;
+            color: white;
+        }
+        .badge-general {
+            background: #6c757d;
+            color: white;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #1F4E78;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2EC4B6;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        .empty-state i {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+    <script src="frontend/js/analytics-storage.js"></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1><i class="fas fa-lock"></i> Admin Access</h1>
+            <p>Enter password to access analytics dashboard</p>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autofocus>
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+            <p style="margin-top: 20px; font-size: 0.85em; color: #999; text-align: center;">
+                <i class="fas fa-info-circle"></i> Admin access only
+            </p>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content" id="dashboardContent">
+        <div class="container">
+            <div class="header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1><i class="fas fa-chart-line"></i> Live Analytics Dashboard</h1>
+                        <p>Real-time visitor interest and engagement tracking</p>
+                    </div>
+                    <button class="btn btn-logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync"></i> Refresh Now
+                    </button>
+                    <button class="btn btn-success" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="btn btn-danger" onclick="clearOldData()">
+                        <i class="fas fa-trash"></i> Clear Old Data (30+ days)
+                    </button>
+                </div>
+            </div>
+
+            <div id="status-alert"></div>
+
+            <div class="stats-grid" id="stats-grid">
+                <div class="loading">Loading analytics data...</div>
+            </div>
+
+            <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2><i class="fas fa-list"></i> Recent Events</h2>
+                    <div>
+                        <span id="event-count">0 events</span>
+                    </div>
+                </div>
+                <div class="filter-tabs">
+                    <div class="filter-tab active" onclick="filterEvents('all', this)">All Events</div>
+                    <div class="filter-tab" onclick="filterEvents('high-interest', this)">High Interest</div>
+                    <div class="filter-tab" onclick="filterEvents('engagement', this)">Engagement</div>
+                    <div class="filter-tab" onclick="filterEvents('blocked', this)">Blocked Access</div>
+                    <div class="filter-tab" onclick="filterEvents('page-views', this)">Page Views</div>
+                </div>
+                <div class="event-list" id="event-list">
+                    <div class="loading">Loading events...</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-chart-pie"></i> Events by Category</h2>
+                <div id="category-stats"></div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-star"></i> Top Events</h2>
+                <div id="top-events"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // PASSWORD PROTECTION
+        // ============================================
+        
+        // SET YOUR PASSWORD HERE - Change this to your secure password
+        const ADMIN_PASSWORD = 'AISCR_PMO_2025'; // TODO: Change this password!
+        
+        // Session storage key
+        const SESSION_KEY = 'analytics_admin_session';
+        const SESSION_DURATION = 2 * 60 * 60 * 1000; // 2 hours
+
+        function checkAuth() {
+            const session = sessionStorage.getItem(SESSION_KEY);
+            if (session) {
+                const sessionData = JSON.parse(session);
+                const now = Date.now();
+                
+                // Check if session is still valid
+                if (now - sessionData.timestamp < SESSION_DURATION) {
+                    showDashboard();
+                    return true;
+                } else {
+                    // Session expired
+                    sessionStorage.removeItem(SESSION_KEY);
+                }
+            }
+            showLogin();
+            return false;
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (password === ADMIN_PASSWORD) {
+                // Create session
+                const sessionData = {
+                    timestamp: Date.now(),
+                    authenticated: true
+                };
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                
+                showDashboard();
+            } else {
+                errorDiv.textContent = 'Incorrect password. Access denied.';
+                errorDiv.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem(SESSION_KEY);
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardContent').style.display = 'none';
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboardContent').style.display = 'block';
+            refreshDashboard();
+        }
+
+        // ============================================
+        // DASHBOARD FUNCTIONS
+        // ============================================
+
+        let allEvents = [];
+        let currentFilter = 'all';
+        let autoRefreshInterval = null;
+
+        async function refreshDashboard() {
+            try {
+                // Check if storage functions are available
+                if (typeof getStoredAnalyticsSummary === 'undefined') {
+                    showAlert('warning', 'Analytics storage not loaded. Make sure analytics-storage.js is included.');
+                    return;
+                }
+
+                // Get summary
+                const summary = await getStoredAnalyticsSummary();
+                
+                // Get all events
+                allEvents = await getAllAnalyticsEvents();
+                allEvents.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Most recent first
+
+                // Update stats
+                updateStats(summary);
+                
+                // Update events list
+                displayEvents();
+                
+                // Update category stats
+                updateCategoryStats(summary.eventsByCategory);
+                
+                // Update top events
+                updateTopEvents(summary.topEvents);
+                
+                // Update status
+                updateStatus(summary);
+                
+            } catch (error) {
+                console.error('Error refreshing dashboard:', error);
+                showAlert('warning', 'Error loading analytics data: ' + error.message);
+            }
+        }
+
+        function updateStats(summary) {
+            const statsGrid = document.getElementById('stats-grid');
+            
+            const interestScore = summary.pageViews > 0 
+                ? Math.round((summary.highInterestEvents / summary.pageViews) * 100) 
+                : 0;
+            
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label"><i class="fas fa-eye"></i> Total Page Views</div>
+                    <div class="stat-value">${summary.pageViews || 0}</div>
+                    <div class="stat-change">${summary.uniquePages || 0} unique pages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label"><i class="fas fa-bolt"></i> Total Events</div>
+                    <div class="stat-value">${summary.totalEvents || 0}</div>
+                    <div class="stat-change">All tracked interactions</div>
+                </div>
+                <div class="stat-card high-interest">
+                    <div class="stat-label"><i class="fas fa-fire"></i> High Interest Events</div>
+                    <div class="stat-value">${summary.highInterestEvents || 0}</div>
+                    <div class="stat-change">Blocked access, key clicks</div>
+                </div>
+                <div class="stat-card engagement">
+                    <div class="stat-label"><i class="fas fa-heart"></i> Engagement Events</div>
+                    <div class="stat-value">${summary.engagementEvents || 0}</div>
+                    <div class="stat-change">Scroll, time on page</div>
+                </div>
+                <div class="stat-card ${interestScore > 50 ? 'high-interest' : interestScore > 25 ? 'warning' : ''}">
+                    <div class="stat-label"><i class="fas fa-percentage"></i> Interest Score</div>
+                    <div class="stat-value">${interestScore}%</div>
+                    <div class="stat-change">High interest / Page views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label"><i class="fas fa-clock"></i> Last Updated</div>
+                    <div class="stat-value" style="font-size: 1.2em;">${formatTime(summary.lastUpdated)}</div>
+                    <div class="stat-change">${formatDate(summary.lastUpdated)}</div>
+                </div>
+            `;
+        }
+
+        function displayEvents() {
+            const eventList = document.getElementById('event-list');
+            document.getElementById('event-count').textContent = `${allEvents.length} total events`;
+            
+            if (allEvents.length === 0) {
+                eventList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <p>No events yet. Events will appear here as visitors interact with the site.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Filter events
+            let filteredEvents = allEvents;
+            if (currentFilter === 'high-interest') {
+                filteredEvents = allEvents.filter(e => 
+                    e.eventCategory === 'interest' || 
+                    e.eventName === 'blocked_access' ||
+                    e.eventName?.includes('interest')
+                );
+            } else if (currentFilter === 'engagement') {
+                filteredEvents = allEvents.filter(e => 
+                    e.eventCategory === 'engagement'
+                );
+            } else if (currentFilter === 'blocked') {
+                filteredEvents = allEvents.filter(e => 
+                    e.eventName === 'blocked_access'
+                );
+            } else if (currentFilter === 'page-views') {
+                filteredEvents = allEvents.filter(e => 
+                    e.type === 'page_view'
+                );
+            }
+            
+            if (filteredEvents.length === 0) {
+                eventList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-filter"></i>
+                        <p>No events match the current filter.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            eventList.innerHTML = filteredEvents.slice(0, 100).map(event => {
+                const badgeClass = event.eventCategory === 'interest' ? 'badge-high-interest' :
+                                  event.eventCategory === 'engagement' ? 'badge-engagement' : 'badge-general';
+                const badgeText = event.eventCategory === 'interest' ? 'HIGH INTEREST' :
+                                 event.eventCategory === 'engagement' ? 'ENGAGEMENT' : 'GENERAL';
+                
+                return `
+                    <div class="event-item">
+                        <div class="event-info">
+                            <div class="event-name">${event.eventName || event.type || 'Unknown Event'}</div>
+                            <div class="event-details">
+                                <span><i class="fas fa-tag"></i> ${event.eventCategory || 'general'}</span>
+                                ${event.eventLabel ? `<span><i class="fas fa-info-circle"></i> ${event.eventLabel}</span>` : ''}
+                                ${event.pagePath ? `<span><i class="fas fa-file"></i> ${event.pagePath}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="event-meta">
+                            <span class="badge ${badgeClass}">${badgeText}</span>
+                            <div style="color: #999; font-size: 0.85em; margin-top: 5px;">${formatTime(event.timestamp)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterEvents(filter, element) {
+            currentFilter = filter;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            displayEvents();
+        }
+
+        function updateCategoryStats(categories) {
+            const categoryDiv = document.getElementById('category-stats');
+            
+            if (!categories || Object.keys(categories).length === 0) {
+                categoryDiv.innerHTML = '<p style="color: #999;">No category data available</p>';
+                return;
+            }
+            
+            const total = Object.values(categories).reduce((a, b) => a + b, 0);
+            
+            categoryDiv.innerHTML = Object.entries(categories)
+                .sort((a, b) => b[1] - a[1])
+                .map(([category, count]) => {
+                    const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+                    return `
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: 600; color: #1F4E78;">${category}</span>
+                                <span style="color: #666;">${count} (${percentage}%)</span>
+                            </div>
+                            <div style="background: #f0f0f0; border-radius: 5px; height: 20px; overflow: hidden;">
+                                <div style="background: #2EC4B6; height: 100%; width: ${percentage}%; transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+        }
+
+        function updateTopEvents(topEvents) {
+            const topEventsDiv = document.getElementById('top-events');
+            
+            if (!topEvents || topEvents.length === 0) {
+                topEventsDiv.innerHTML = '<p style="color: #999;">No top events data available</p>';
+                return;
+            }
+            
+            topEventsDiv.innerHTML = topEvents.map((event, index) => `
+                <div style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
+                    <div style="width: 30px; text-align: center; font-weight: bold; color: #2EC4B6;">${index + 1}</div>
+                    <div style="flex: 1; margin-left: 10px;">
+                        <div style="font-weight: 600; color: #1F4E78;">${event.name}</div>
+                    </div>
+                    <div style="font-weight: bold; color: #666;">${event.count} times</div>
+                </div>
+            `).join('');
+        }
+
+        function updateStatus(summary) {
+            const alertDiv = document.getElementById('status-alert');
+            
+            let alertHTML = '';
+            if (summary.totalEvents === 0) {
+                alertHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> No events tracked yet. Events will appear as visitors interact with your site.</div>';
+            } else if (summary.highInterestEvents > 0) {
+                alertHTML = `<div class="alert alert-info"><i class="fas fa-fire"></i> <strong>${summary.highInterestEvents} high interest events</strong> detected! Visitors are showing strong interest in your application.</div>`;
+            }
+            
+            alertDiv.innerHTML = alertHTML;
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.getElementById('status-alert');
+            alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        async function exportData() {
+            try {
+                const data = await exportStoredAnalyticsData();
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `analytics_export_${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                URL.revokeObjectURL(url);
+                showAlert('info', 'Data exported successfully!');
+            } catch (error) {
+                showAlert('warning', 'Error exporting data: ' + error.message);
+            }
+        }
+
+        async function clearOldData() {
+            if (!confirm('Are you sure you want to delete events older than 30 days? This cannot be undone.')) {
+                return;
+            }
+            
+            try {
+                const deleted = await clearOldEvents(30);
+                showAlert('info', `Deleted ${deleted} old events. Refreshing dashboard...`);
+                setTimeout(refreshDashboard, 1000);
+            } catch (error) {
+                showAlert('warning', 'Error clearing old data: ' + error.message);
+            }
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString();
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString();
+        }
+
+        // Auto-refresh every 30 seconds
+        function startAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+            autoRefreshInterval = setInterval(refreshDashboard, 30000);
+        }
+
+        // Suppress browser extension errors (harmless)
+        window.addEventListener('error', (event) => {
+            if (event.message && event.message.includes('message channel')) {
+                event.preventDefault();
+                return false;
+            }
+        }, true);
+
+        window.addEventListener('unhandledrejection', (event) => {
+            if (event.reason && event.reason.message && event.reason.message.includes('message channel')) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            // Check authentication first
+            if (checkAuth()) {
+                startAutoRefresh();
+            }
+        });
+    </script>
+</body>
+</html>
